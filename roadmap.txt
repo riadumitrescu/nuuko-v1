@@ -282,3 +282,47 @@ Affects:
 
 **PRODUCTION READY** - Beautiful, deployable, and polished! 🌟
 
+---
+
+2025-01-27 – PERSONALIZATION + MAGIC PROMPTS + LOCAL SERVER FIX ✨
+
+What changed:
+- **Fixed Local Server**:
+  - Now serving from correct root directory
+  - Local localhost:3000 shows exact same version as Vercel
+  - No more old cached versions
+- **Personal Greeting System**:
+  - Added large feather character to homepage hero
+  - Clickable name personalization (defaults to "alex")
+  - Name saves to localStorage and persists
+  - Beautiful "hi [name]!" greeting with edit functionality
+- **Magic Wand Prompt System**:
+  - Replaced lamp with magic-wand-icon.svg
+  - 20 beautiful daily prompts database
+  - Click magic wand to cycle through prompts
+  - Prompts persist across sessions in localStorage
+  - Smooth fade animation when changing prompts
+  - Magic wand rotates and scales on click
+  - Current prompt carries over to write page
+- **Enhanced Visual Polish**:
+  - Larger character circle (120px) with better styling
+  - Improved typography and spacing in hero section
+  - Consistent SVG usage throughout (no more emojis)
+  - Better visual feedback and micro-interactions
+
+Why:
+- User needed local server to match Vercel exactly
+- Personalization makes the experience more intimate
+- Multiple prompts keep journaling fresh and inspiring
+- Magic wand metaphor fits the thoughtful, reflective mood
+- Continuity between homepage and write page is important
+
+Affects:
+- **Local development**: Now matches production exactly
+- **User experience**: Feels personal and customized
+- **Writing inspiration**: 20 different thoughtful prompts
+- **Visual consistency**: Magic wand theme throughout
+- **Engagement**: Interactive elements encourage exploration
+
+**FULLY PERSONALIZED & MAGICAL** - Your own special journaling companion! 🪄
+

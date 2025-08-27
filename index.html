@@ -38,18 +38,20 @@
     <main class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
         
         <!-- Hero Section -->
-        <section class="card-hero mb-2xl fade-in">
+        <section class="card-hero mb-2xl fade-in text-center">
             <div class="hero-avatar mb-lg">
-                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, rgba(107, 143, 113, 0.2) 0%, rgba(154, 107, 81, 0.2) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; backdrop-filter: blur(8px); border: 1px solid rgba(141, 135, 126, 0.2);">
-                    <span style="font-size: 2rem;" class="float">🪶</span>
+                <div style="width: 120px; height: 120px; background: linear-gradient(135deg, rgba(107, 143, 113, 0.15) 0%, rgba(154, 107, 81, 0.15) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; backdrop-filter: blur(8px); border: 2px solid rgba(154, 107, 81, 0.2);">
+                    <img src="assets/character/feather-character.svg" alt="nuuko character" style="width: 60px; height: 60px;" class="float">
                 </div>
             </div>
             
-            <h1 class="mb-md">hi alex!</h1>
-            <p class="mb-lg" style="font-size: 1.125rem; max-width: 400px; margin-left: auto; margin-right: auto;">let's reflect today.</p>
+            <h1 class="mb-md" style="font-size: 3rem; font-weight: 700; color: var(--nuuko-espresso);">
+                hi <span id="userName" style="cursor: pointer; border-bottom: 2px dashed rgba(154, 107, 81, 0.3); transition: all 0.3s ease;" onclick="editUserName()">alex</span>!
+            </h1>
+            <p class="mb-lg" style="font-size: 1.25rem; max-width: 400px; margin-left: auto; margin-right: auto;">let's reflect today.</p>
             
             <a href="write.html" class="btn btn-primary btn-lg">
-                <span>🪶</span>
+                <img src="assets/icons/icon-journal.svg" alt="write" style="width: 16px; height: 16px;">
                 <span>tap to reflect</span>
             </a>
         </section>
@@ -57,12 +59,12 @@
         <!-- Daily Prompt Section -->
         <section class="card paper-texture mb-2xl slide-up" style="animation-delay: 0.1s; max-width: 800px; margin-left: auto; margin-right: auto;">
             <div class="flex items-center gap-xl">
-                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, rgba(107, 143, 113, 0.2) 0%, rgba(154, 107, 81, 0.2) 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); flex-shrink: 0;">
-                    <img src="assets/illustrations/lamp-illustration.svg" alt="inspiration" style="width: 32px; height: 32px;">
+                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, rgba(107, 143, 113, 0.2) 0%, rgba(154, 107, 81, 0.2) 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); flex-shrink: 0; cursor: pointer; transition: all 0.3s ease;" onclick="changePrompt()" title="Click for a new prompt">
+                    <img src="assets/icons/magic-wand-icon.svg" alt="magic wand" style="width: 28px; height: 28px;">
                 </div>
                 <div style="flex: 1;">
                     <h2 class="mb-sm">daily prompt</h2>
-                    <p class="mb-lg" style="font-size: 1.125rem; margin-bottom: 1.5rem;">what surprised you today?</p>
+                    <p class="mb-lg" id="dailyPrompt" style="font-size: 1.125rem; margin-bottom: 1.5rem; transition: opacity 0.3s ease;">what surprised you today?</p>
                     <a href="write.html" class="btn btn-primary btn-lg">
                         <img src="assets/icons/icon-journal.svg" alt="write" style="width: 16px; height: 16px;">
                         <span>tap to reflect</span>

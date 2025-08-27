@@ -1,6 +1,30 @@
 // Nuuko - Main JavaScript
 // Handles homepage functionality and shared interactions
 
+// === DAILY PROMPTS DATABASE ===
+const DAILY_PROMPTS = [
+    "what surprised you today?",
+    "what made you smile recently?",
+    "what are you grateful for right now?",
+    "what challenged you today?",
+    "what did you learn about yourself?",
+    "what moment do you want to remember?",
+    "what felt meaningful today?",
+    "what are you curious about?",
+    "what would you tell your younger self?",
+    "what made you feel proud?",
+    "what helped you feel calm?",
+    "what connection did you make today?",
+    "what inspired you recently?",
+    "what would you like to let go of?",
+    "what are you excited about?",
+    "what small joy brightened your day?",
+    "what act of kindness touched you?",
+    "what made you feel hopeful?",
+    "what would you do if you weren't afraid?",
+    "what brings you peace?"
+];
+
 // === UTILITY FUNCTIONS ===
 function formatDate(date) {
     return date.toLocaleDateString('en-US', {
@@ -39,6 +63,71 @@ function updateStats() {
     return stats;
 }
 
+// === USER PERSONALIZATION ===
+function getUserName() {
+    return localStorage.getItem('nuuko_user_name') || 'alex';
+}
+
+function saveUserName(name) {
+    localStorage.setItem('nuuko_user_name', name.toLowerCase());
+}
+
+function editUserName() {
+    const currentName = getUserName();
+    const newName = prompt('What should we call you?', currentName);
+    
+    if (newName && newName.trim() !== '') {
+        const cleanName = newName.trim().toLowerCase();
+        saveUserName(cleanName);
+        
+        const userNameElement = document.getElementById('userName');
+        if (userNameElement) {
+            userNameElement.textContent = cleanName;
+        }
+    }
+}
+
+// === PROMPT SYSTEM ===
+function getCurrentPrompt() {
+    return localStorage.getItem('nuuko_current_prompt') || DAILY_PROMPTS[0];
+}
+
+function saveCurrentPrompt(prompt) {
+    localStorage.setItem('nuuko_current_prompt', prompt);
+}
+
+function changePrompt() {
+    const currentPrompt = getCurrentPrompt();
+    let newPrompt;
+    
+    // Get a different random prompt
+    do {
+        newPrompt = DAILY_PROMPTS[Math.floor(Math.random() * DAILY_PROMPTS.length)];
+    } while (newPrompt === currentPrompt && DAILY_PROMPTS.length > 1);
+    
+    // Save the new prompt
+    saveCurrentPrompt(newPrompt);
+    
+    // Update the UI with animation
+    const promptElement = document.getElementById('dailyPrompt');
+    if (promptElement) {
+        promptElement.style.opacity = '0';
+        setTimeout(() => {
+            promptElement.textContent = newPrompt;
+            promptElement.style.opacity = '1';
+        }, 150);
+    }
+    
+    // Add a little magic animation to the wand
+    const wandElement = document.querySelector('[onclick="changePrompt()"]');
+    if (wandElement) {
+        wandElement.style.transform = 'scale(1.1) rotate(15deg)';
+        setTimeout(() => {
+            wandElement.style.transform = 'scale(1) rotate(0deg)';
+        }, 200);
+    }
+}
+
 // === HOMEPAGE FUNCTIONS ===
 function initializeHomepage() {
     // Set current month
@@ -46,6 +135,18 @@ function initializeHomepage() {
     if (currentMonthElement) {
         const currentMonth = new Date().toLocaleDateString('en-US', { month: 'long' }).toLowerCase();
         currentMonthElement.textContent = currentMonth;
+    }
+    
+    // Load user name
+    const userNameElement = document.getElementById('userName');
+    if (userNameElement) {
+        userNameElement.textContent = getUserName();
+    }
+    
+    // Load current prompt
+    const promptElement = document.getElementById('dailyPrompt');
+    if (promptElement) {
+        promptElement.textContent = getCurrentPrompt();
     }
     
     // Load and display library

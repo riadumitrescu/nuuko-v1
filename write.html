@@ -47,10 +47,10 @@
         <!-- Prompt Section -->
         <section class="card-minimal paper-texture mb-xl slide-up text-center" style="border-left: 4px solid rgba(107, 143, 113, 0.4); animation-delay: 0.1s; max-width: 600px; margin-left: auto; margin-right: auto;">
             <div class="flex items-center justify-center gap-md">
-                <img src="assets/illustrations/lamp-illustration.svg" alt="inspiration" style="width: 24px; height: 24px;">
+                <img src="assets/icons/magic-wand-icon.svg" alt="magic prompt" style="width: 20px; height: 20px;">
                 <div>
                     <h3 class="mb-sm" style="font-size: 1.125rem;">today's reflection prompt:</h3>
-                    <p class="italic text-muted" style="font-size: 1rem; margin: 0; color: var(--nuuko-stone);">what surprised you today?</p>
+                    <p class="italic text-muted" id="writePagePrompt" style="font-size: 1rem; margin: 0; color: var(--nuuko-stone);">what surprised you today?</p>
                 </div>
             </div>
         </section>
@@ -200,6 +200,13 @@
             day: 'numeric'
         }).toLowerCase();
         currentDateDisplay.textContent = dateString;
+        
+        // Load current prompt from localStorage (same as homepage)
+        const currentPrompt = localStorage.getItem('nuuko_current_prompt') || 'what surprised you today?';
+        const writePagePrompt = document.getElementById('writePagePrompt');
+        if (writePagePrompt) {
+            writePagePrompt.textContent = currentPrompt;
+        }
         
         // Mood mapping
         const moods = ['anxious', 'melancholy', 'calm', 'thoughtful', 'joyful', 'energetic', 'grateful'];
