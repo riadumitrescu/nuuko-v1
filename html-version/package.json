@@ -1,0 +1,22 @@
+{
+  "name": "nuuko-html",
+  "version": "1.0.0",
+  "description": "Nuuko - Cozy journaling experience in pure HTML/CSS/JS",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 3000 || python -m http.server 3000",
+    "dev": "python3 -m http.server 3000 || python -m http.server 3000",
+    "serve": "python3 -m http.server 3000 || python -m http.server 3000"
+  },
+  "keywords": [
+    "journaling",
+    "reflection",
+    "cozy",
+    "storybook",
+    "html",
+    "css",
+    "vanilla-js"
+  ],
+  "author": "Nuuko Team",
+  "license": "MIT"
+}

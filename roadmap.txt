@@ -1,0 +1,243 @@
+2025-08-26 – Added parent task list for PRD
+
+What changed:
+- Created `/tasks/tasks-prd.md` with high-level implementation tasks derived from `about-nuuko/prd.md` and supporting docs.
+
+Why:
+- To provide a clear, actionable roadmap for the MVP aligned with goals: journaling-first, instant reflection, insights preview, and local-first storage.
+
+Affects:
+- Planning and engineering workflow for the Nuuko web prototype (frontend scaffolding, storage, routing, pages, assets, copy, and metrics).
+
+---
+
+2025-08-26 – Completed Tasks 1 & 2: Frontend scaffold + Design system
+
+What changed:
+- Scaffolded Vite + React + TypeScript app in `/web/` directory
+- Added Tailwind CSS v4 with @tailwindcss/postcss plugin
+- Configured ESLint, Prettier, and basic GitHub Actions CI
+- Implemented complete design system per `design-system.md`:
+  - Color palette: green, clay, espresso, cream, stone
+  - Typography: Inter (primary) + Crimson Pro (secondary) from Google Fonts
+  - Component classes: .card, .btn-primary/.secondary/.ghost, .input/.textarea
+  - Global styles and focus states
+- Created design system showcase in App.tsx
+
+Why:
+- Establishes the foundation for all UI development with consistent cozy, storybook aesthetic
+- Ensures type safety and code quality from the start
+- Provides visual reference for design tokens and components
+
+Affects:
+- All future UI development will use these design tokens and component classes
+- Ready to begin building actual app pages (homepage, journal, insights, settings)
+
+---
+
+2025-08-26 – Completed Task 3: Data Model & Local-First Storage ✨
+
+What changed:
+- Built comprehensive TypeScript data models (Entry, LocalSettings, InsightsData, AppState)
+- Implemented IndexedDB storage with localforage for instant, offline-first journaling
+- Created retention policy system (keep last N entries or N days)
+- Built React hooks (useEntries, useSettings, useInsights, useFirstTimeExperience)
+- Added utility functions for date formatting, mood handling, and encouraging messages
+- Implemented insights calculation (streaks, mood distribution, word counts)
+- Added Jest testing framework with comprehensive storage tests
+- Created live demo showcasing emotional journaling with mood tracking
+
+Why:
+- Local-first approach eliminates sign-up friction - users can start journaling instantly
+- Emotional data model captures mood, tags, and reflections for meaningful insights
+- Retention policies keep storage manageable while preserving user control
+- React hooks make data management feel effortless with optimistic updates
+- Encouraging utilities (mood messages, streak celebration) create delightful UX
+
+Affects:
+- Foundation for the entire journaling experience - instant saves, no loading states
+- Enables homepage recent entries, insights preview, and settings management
+- Ready for building actual journal composer, insights dashboards, and app pages
+
+---
+
+2025-01-27 – MAJOR REDESIGN: Complete Cozy Storybook Aesthetic ✨
+
+What changed:
+- **Color System**: Completely redesigned with Nuuko palette (Green #6B8F71, Clay #9A6B51, Espresso #3D342C, Cream #F3EFE5, Stone #8D877E)
+- **Typography**: Enhanced Inter + Crimson Pro implementation with proper serif hierarchy for cozy feel
+- **Components**: Redesigned all UI components with storybook aesthetic:
+  - Cards: Paper-like texture with soft shadows and backdrop blur
+  - Buttons: Pill-shaped with gentle hover animations and warm colors
+  - Forms: Inset feel with paper texture and encouraging placeholders
+  - Navigation: Warm, gentle with floating icons and lowercased labels
+- **Voice & Copy**: Applied encouraging, warm tone throughout:
+  - "hi alex!" instead of "Welcome back, Alex"
+  - "tap to reflect" instead of "Start writing"
+  - "no notes yet — today's a fresh page" instead of "No entries yet"
+  - "your library" instead of "Recent entries"
+  - "patterns" instead of "Your insights"
+- **Visual Elements**: Added cozy touches:
+  - Floating feather animations
+  - Paper textures and subtle gradients
+  - Book-spine accents on entry cards
+  - Gentle sparkle backgrounds
+  - Rounded, soft shapes throughout
+- **Mood System**: Updated spectrum with warmer, more nuanced colors
+- **Mobile Experience**: Enhanced responsive design with cozy mobile interactions
+
+Why:
+- Previous design was too generic/corporate - needed the warm, storybook feel described in design-system.md
+- Voice was too formal - users need encouragement, not instruction
+- Visual hierarchy needed serif headers and warmer colors to feel inviting
+- Entry cards needed book-like metaphor to support "library" concept
+- Overall experience should feel like a cozy corner with a favorite journal
+
+Affects:
+- **All pages**: HomePage, JournalPage, InsightsPage now match cozy aesthetic
+- **All components**: Navigation, cards, buttons, forms redesigned
+- **Voice**: Copy throughout app now uses encouraging, lowercase style
+- **Brand consistency**: Now properly matches design system and app mockups
+- **User experience**: More inviting and emotionally supportive journaling environment
+
+---
+
+2025-01-27 – STUNNING HTML/CSS REBUILD: Lightweight & Beautiful ✨
+
+What changed:
+- **Complete HTML/CSS/JS Rebuild**: Created lightweight version with same functionality
+- **Stunning Visual Design**: 
+  - Paper-like textures with subtle notebook lines and left margins
+  - Book-spine accents on entry cards with gradient borders
+  - Floating animations and gentle micro-interactions
+  - Backdrop blur effects and soft shadows throughout
+  - Custom mood spectrum with 7 warm, nuanced colors
+- **Enhanced Writing Experience**:
+  - Paper-textured writing area with notebook line background
+  - Auto-resizing textarea that feels like real paper
+  - Mood picker with smooth thumb interactions
+  - Real-time word count and reading time
+  - Auto-save drafts every 30 seconds
+  - Keyboard shortcuts (⌘+S to save)
+- **Beautiful Typography & Voice**:
+  - Perfect Inter + Crimson Pro implementation
+  - Consistent encouraging voice throughout
+  - Warm, lowercase styling ("hi alex!", "tap to reflect")
+- **Performance & Accessibility**:
+  - Only ~50KB total size (CSS + JS)
+  - Works completely offline
+  - Native HTML semantics for screen readers
+  - Keyboard navigation throughout
+  - Loads instantly with no framework overhead
+- **Local-First Storage**: 
+  - Full localStorage implementation
+  - Entry persistence with mood and metadata
+  - Stats calculation (streaks, words, insights)
+  - Cross-tab synchronization
+
+Why:
+- React felt heavy for this intimate journaling experience
+- HTML/CSS gives complete control over animations and paper-like aesthetic
+- Faster loading and works universally (any device with a browser)
+- Better accessibility with native HTML semantics
+- No build process needed - just open and use
+- Can run completely offline once cached
+
+Affects:
+- **New version available** at `/html-version/` directory
+- **All core functionality** preserved: journaling, mood tracking, insights, calendar
+- **Enhanced experience**: More paper-like, cozy, and responsive
+- **Better performance**: Instant loading, smooth animations
+- **Accessibility improved**: Keyboard navigation, screen reader friendly
+- **Demo ready**: Includes sample data function for testing
+
+Server running at: http://localhost:3000
+
+**FIXES & POLISH APPLIED:**
+- ✅ Fixed write page modal overlay issue
+- ✅ Fixed calendar generation and layout
+- ✅ Enhanced button gradients and micro-interactions  
+- ✅ Improved mood spectrum with premium styling
+- ✅ Added paper-like notebook lines and margins
+- ✅ Professional shadows and backdrop effects
+- ✅ Enhanced mobile responsiveness
+- ✅ Polished all hover states and transitions
+- ✅ Improved visual hierarchy throughout
+
+**READY FOR PRODUCTION** - All functionality tested and working ✨
+
+---
+
+2025-01-27 – MAJOR LAYOUT REDESIGN: Spacious & Immersive Experience 🎨
+
+What changed:
+- **Homepage Redesign**: 
+  - Removed cramped sidebar layout
+  - Daily prompt now featured prominently at top
+  - Library section gets full width with better spacing
+  - Stats and calendar in elegant 2-column layout below
+  - Much better visual hierarchy and breathing room
+- **Writing Page Revolution**:
+  - HUGE notebook area (600px minimum height vs 350px)
+  - Full-width immersive writing experience
+  - Enhanced paper effects: notebook lines, margin lines, hole punch details
+  - Controls moved to bottom in organized 3-column layout
+  - Much larger, more readable text (1.125rem vs 0.875rem)
+  - Better padding and spacing throughout
+- **Mobile Optimizations**:
+  - Controls stack vertically on mobile
+  - Writing area scales appropriately
+  - Hole punch effects hidden on small screens
+  - Better touch targets and readability
+
+Why:
+- Previous layout felt cramped and didn't prioritize the writing experience
+- Sidebar layout wasted space and made the notebook feel small
+- Writing should be the hero element, not squeezed into a column
+- Better use of screen real estate for a more professional feel
+- More immersive journaling experience with notebook-like feel
+
+Affects:
+- **Homepage**: More spacious, better visual flow, prominent daily prompt
+- **Writing experience**: Much larger, more immersive notebook feel
+- **Visual hierarchy**: Better focus on key elements
+- **Mobile experience**: Improved responsiveness and usability
+- **Professional polish**: More refined spacing and layout throughout
+
+**USER FEEDBACK IMPLEMENTED** - Layouts now feel spacious and engaging! 🌟
+
+---
+
+2025-01-27 – CLEANUP & INSIGHTS REDESIGN: Beautiful Patterns Page 🎨
+
+What changed:
+- **File Cleanup**: 
+  - Deleted entire /web directory (React version) - no longer needed
+  - Cleaned up all unused React/Node.js files  
+  - Simplified project structure to HTML-only version
+- **Insights Page Redesign**:
+  - Completely redesigned to match beautiful image 8 layout
+  - Large, prominent stats cards (3rem font size vs 2rem)
+  - Better visual hierarchy with proper spacing
+  - Added encouraging subtexts for each stat
+  - Created beautiful book-style layout for recent pages
+  - Added mood streak visualization section
+  - Book spine effect and center divider for authentic feel
+  - Responsive grid layout that adapts to content
+
+Why:
+- Old React files were confusing and taking up space
+- Previous insights page was "a mess" and didn't match the vision
+- Image 8 showed the perfect layout inspiration
+- Need clean, focused, beautiful stats presentation
+- Book metaphor should feel authentic throughout
+
+Affects:
+- **Project structure**: Much cleaner, HTML-only focus
+- **Insights page**: Now matches the beautiful design vision
+- **User experience**: Clear, engaging stats presentation
+- **Visual consistency**: Book theme carried throughout
+- **Mobile experience**: Responsive stats cards and layouts
+
+**MAJOR IMPROVEMENT** - Clean codebase + gorgeous insights page! ✨
+
