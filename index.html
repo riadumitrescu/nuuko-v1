@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nuuko - your cozy reflection space</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪶</text></svg>">
+    <meta name="description" content="A cozy journaling space for reflection and growth">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" role="navigation">
+        <div class="nav-content">
+            <a href="index.html" class="nav-logo">
+                <img src="assets/character/feather-character.svg" alt="nuuko feather" class="feather" style="width: 24px; height: 24px;">
+                <span class="nav-brand">nuuko</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">
+                    <img src="assets/icons/icon-library.svg" alt="home" class="icon" style="width: 16px; height: 16px;">
+                    <span>home</span>
+                </a>
+                <a href="write.html" class="nav-link">
+                    <img src="assets/icons/icon-journal.svg" alt="write" class="icon" style="width: 16px; height: 16px;">
+                    <span>write</span>
+                </a>
+                <a href="insights.html" class="nav-link">
+                    <img src="assets/icons/icon-insights.svg" alt="insights" class="icon" style="width: 16px; height: 16px;">
+                    <span>patterns</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+        
+        <!-- Hero Section -->
+        <section class="card-hero mb-2xl fade-in">
+            <div class="hero-avatar mb-lg">
+                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, rgba(107, 143, 113, 0.2) 0%, rgba(154, 107, 81, 0.2) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; backdrop-filter: blur(8px); border: 1px solid rgba(141, 135, 126, 0.2);">
+                    <span style="font-size: 2rem;" class="float">🪶</span>
+                </div>
+            </div>
+            
+            <h1 class="mb-md">hi alex!</h1>
+            <p class="mb-lg" style="font-size: 1.125rem; max-width: 400px; margin-left: auto; margin-right: auto;">let's reflect today.</p>
+            
+            <a href="write.html" class="btn btn-primary btn-lg">
+                <span>🪶</span>
+                <span>tap to reflect</span>
+            </a>
+        </section>
+
+        <!-- Daily Prompt Section -->
+        <section class="card paper-texture mb-2xl slide-up" style="animation-delay: 0.1s; max-width: 800px; margin-left: auto; margin-right: auto;">
+            <div class="flex items-center gap-xl">
+                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, rgba(107, 143, 113, 0.2) 0%, rgba(154, 107, 81, 0.2) 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); flex-shrink: 0;">
+                    <img src="assets/illustrations/lamp-illustration.svg" alt="inspiration" style="width: 32px; height: 32px;">
+                </div>
+                <div style="flex: 1;">
+                    <h2 class="mb-sm">daily prompt</h2>
+                    <p class="mb-lg" style="font-size: 1.125rem; margin-bottom: 1.5rem;">what surprised you today?</p>
+                    <a href="write.html" class="btn btn-primary btn-lg">
+                        <img src="assets/icons/icon-journal.svg" alt="write" style="width: 16px; height: 16px;">
+                        <span>tap to reflect</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Your Library Section -->
+        <section class="slide-up mb-2xl" style="animation-delay: 0.2s;">
+            <div class="flex items-center justify-between mb-xl">
+                <h2 style="font-size: 2rem;">your library</h2>
+                <a href="#" class="btn btn-ghost">
+                    <img src="assets/icons/icon-library.svg" alt="library" style="width: 16px; height: 16px;">
+                    <span>see all</span>
+                </a>
+            </div>
+
+            <!-- Sample entries or empty state -->
+            <div id="libraryContent">
+                <!-- Empty state initially -->
+                <div class="card text-center paper-texture" style="padding: 4rem 2rem; max-width: 600px; margin: 0 auto;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, rgba(107, 143, 113, 0.2) 0%, rgba(154, 107, 81, 0.2) 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; backdrop-filter: blur(8px);">
+                        <img src="assets/icons/icon-library.svg" alt="library" style="width: 40px; height: 40px;">
+                    </div>
+                    <h3 class="mb-md" style="font-size: 1.5rem;">no notes yet — today's a fresh page</h3>
+                    <p class="mb-xl" style="font-size: 1.125rem; max-width: 400px; margin-left: auto; margin-right: auto; color: var(--nuuko-stone);">your first page is waiting to be written.</p>
+                    <a href="write.html" class="btn btn-primary btn-lg">
+                        <img src="assets/icons/icon-journal.svg" alt="write" style="width: 16px; height: 16px;">
+                        <span>write your first page</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Monthly Map Section -->
+        <section class="card paper-texture mb-xl slide-up" style="animation-delay: 0.3s;">
+            <h3 class="mb-xl" style="font-size: 1.5rem;">monthly map</h3>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                <div class="text-center">
+                    <div style="font-size: 3rem; font-weight: 700; color: var(--nuuko-green); margin-bottom: 0.5rem;" id="daysShowing">0</div>
+                    <div style="font-size: 1rem; color: var(--nuuko-stone);">days</div>
+                    <div style="font-size: 0.875rem; color: var(--nuuko-stone); margin-top: 0.25rem;">you've been showing up for</div>
+                </div>
+                <div class="text-center">
+                    <div style="font-size: 3rem; font-weight: 700; color: var(--nuuko-clay); margin-bottom: 0.5rem;" id="pagesWritten">0</div>
+                    <div style="font-size: 1rem; color: var(--nuuko-stone);">pages written</div>
+                    <div style="font-size: 0.875rem; color: var(--nuuko-stone); margin-top: 0.25rem; display: flex; align-items: center; justify-content: center; gap: 0.25rem;">
+                        <img src="assets/icons/icon-library.svg" alt="library" style="width: 12px; height: 12px;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calendar Section -->
+        <section class="card paper-texture mb-xl slide-up" style="animation-delay: 0.4s;">
+            <div class="flex items-center justify-between mb-xl">
+                <h3 id="currentMonth" style="font-size: 1.5rem;">august</h3>
+                <span class="text-muted" style="font-size: 1rem;">2025</span>
+            </div>
+
+            <div id="calendar" class="calendar" style="gap: 0.5rem; margin-bottom: 1.5rem;">
+                <!-- Day headers -->
+                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">s</div>
+                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">m</div>
+                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">t</div>
+                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">w</div>
+                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">t</div>
+                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">f</div>
+                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">s</div>
+                
+                <!-- Calendar days will be generated by JavaScript -->
+            </div>
+
+            <div class="flex items-center gap-sm text-sm text-muted">
+                <div style="width: 10px; height: 10px; background: var(--nuuko-green); border-radius: 50%;"></div>
+                <span>days with notes</span>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="border-top: 1px solid rgba(141, 135, 126, 0.2); background: linear-gradient(to right, rgba(243, 239, 229, 0.8), rgba(237, 231, 219, 0.8)); margin-top: 3rem;">
+        <div class="container" style="padding: 1.5rem 2rem;">
+            <div class="flex flex-col items-center gap-lg" style="text-align: center;">
+                <div class="flex items-center gap-md">
+                    <span style="font-size: 1.125rem;" class="float">🪶</span>
+                    <span style="font-family: var(--font-serif); font-weight: 500; color: var(--nuuko-espresso);">nuuko - your cozy reflection space</span>
+                </div>
+                <p style="font-size: 0.75rem; color: var(--nuuko-stone); font-style: italic; margin: 0;">crafted with care for mindful journaling ✨</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

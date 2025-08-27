@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>patterns - nuuko</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪶</text></svg>">
+    <meta name="description" content="Gentle insights into your reflection journey">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav" role="navigation">
+        <div class="nav-content">
+            <a href="index.html" class="nav-logo">
+                <img src="assets/character/feather-character.svg" alt="nuuko feather" class="feather" style="width: 24px; height: 24px;">
+                <span class="nav-brand">nuuko</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">
+                    <img src="assets/icons/icon-library.svg" alt="home" class="icon" style="width: 16px; height: 16px;">
+                    <span>home</span>
+                </a>
+                <a href="write.html" class="nav-link">
+                    <img src="assets/icons/icon-journal.svg" alt="write" class="icon" style="width: 16px; height: 16px;">
+                    <span>write</span>
+                </a>
+                <a href="insights.html" class="nav-link active">
+                    <img src="assets/icons/icon-insights.svg" alt="insights" class="icon" style="width: 16px; height: 16px;">
+                    <span>patterns</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container" style="padding-top: 2rem; padding-bottom: 3rem; max-width: 1000px;">
+        
+        <!-- Header -->
+        <header class="text-center mb-2xl fade-in">
+            <h1 class="mb-sm" style="font-size: 2.5rem;">patterns</h1>
+            <p class="text-muted mb-lg" style="font-size: 1.125rem;">discover the rhythms in your reflections</p>
+            <div style="width: 64px; height: 4px; background: linear-gradient(to right, var(--nuuko-green), var(--nuuko-clay)); border-radius: 2px; margin: 0 auto; opacity: 0.6;"></div>
+        </header>
+
+        <!-- Content Area -->
+        <div id="insightsContent">
+            <!-- Empty State (default) -->
+            <div id="emptyState" class="text-center">
+                <div class="card paper-texture" style="padding: 4rem 2rem; max-width: 600px; margin: 0 auto;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, rgba(107, 143, 113, 0.2) 0%, rgba(154, 107, 81, 0.2) 100%); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 2rem; backdrop-filter: blur(8px);">
+                        <img src="assets/icons/icon-insights.svg" alt="insights" style="width: 40px; height: 40px;">
+                    </div>
+                    <h2 class="mb-md" style="font-size: 1.5rem;">your story begins here</h2>
+                    <p class="mb-xl text-muted" style="font-size: 1.125rem; max-width: 400px; margin-left: auto; margin-right: auto; color: var(--nuuko-stone);">start writing to see patterns about your reflection journey.</p>
+                    <a href="write.html" class="btn btn-primary btn-lg">
+                        <img src="assets/icons/icon-journal.svg" alt="write" style="width: 16px; height: 16px;">
+                        <span>write your first page</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats Grid (hidden by default) -->
+            <div id="statsGrid" class="hidden">
+                <!-- Top Row: Main Stats -->
+                <div class="grid mb-xl slide-up" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; animation-delay: 0.1s;">
+                    <!-- Pages Written -->
+                    <div class="card text-center paper-texture" style="padding: 2rem;">
+                        <div style="font-size: 3rem; font-weight: 700; color: var(--nuuko-clay); margin-bottom: 0.5rem;" id="totalEntries">1</div>
+                        <div style="font-size: 1rem; color: var(--nuuko-stone); margin-bottom: 0.5rem;">pages written</div>
+                        <div style="font-size: 0.875rem; color: var(--nuuko-stone); font-style: italic;" id="pagesSubtext">just getting started</div>
+                    </div>
+
+                    <!-- Day Streak -->
+                    <div class="card text-center paper-texture" style="padding: 2rem;">
+                        <div style="font-size: 3rem; font-weight: 700; color: var(--nuuko-green); margin-bottom: 0.5rem;" id="currentStreak">1</div>
+                        <div style="font-size: 1rem; color: var(--nuuko-stone); margin-bottom: 0.5rem;">day streak</div>
+                        <div style="font-size: 0.875rem; color: var(--nuuko-stone); font-style: italic;">keep the momentum going</div>
+                    </div>
+
+                    <!-- Words per Page -->
+                    <div class="card text-center paper-texture" style="padding: 2rem;">
+                        <div style="font-size: 3rem; font-weight: 700; color: var(--nuuko-espresso); margin-bottom: 0.5rem;" id="averageWords">19</div>
+                        <div style="font-size: 1rem; color: var(--nuuko-stone); margin-bottom: 0.5rem;">words per page</div>
+                        <div style="font-size: 0.875rem; color: var(--nuuko-stone); font-style: italic;">room to grow</div>
+                    </div>
+
+                    <!-- Total Words -->
+                    <div class="card text-center paper-texture" style="padding: 2rem;">
+                        <div style="font-size: 3rem; font-weight: 700; color: var(--nuuko-green); margin-bottom: 0.5rem;" id="totalWords">19</div>
+                        <div style="font-size: 1rem; color: var(--nuuko-stone); margin-bottom: 0.5rem;">total words</div>
+                        <div style="font-size: 0.875rem; color: var(--nuuko-stone); font-style: italic;" id="totalWordsNote">just getting started</div>
+                    </div>
+                </div>
+
+                <!-- Mood Streak Visualization -->
+                <section class="slide-up mb-xl" style="animation-delay: 0.2s;">
+                    <div class="card paper-texture">
+                        <h3 class="mb-xl" style="font-size: 1.25rem;">mood streak</h3>
+                        <div id="moodVisualization" style="height: 120px; background: linear-gradient(90deg, rgba(214, 126, 126, 0.2) 0%, rgba(107, 143, 113, 0.2) 50%, rgba(154, 107, 81, 0.2) 100%); border-radius: 12px; position: relative; display: flex; align-items: center; justify-content: center;">
+                            <div style="color: var(--nuuko-stone); font-style: italic;">write more entries to see your mood patterns</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Pages Book -->
+                <section id="recentPagesSection" class="slide-up" style="animation-delay: 0.3s;">
+                    <div class="flex items-center justify-between mb-xl">
+                        <h2 style="font-size: 1.5rem;">recent pages</h2>
+                        <a href="index.html" class="btn btn-ghost">
+                            <img src="assets/icons/icon-library.svg" alt="home" style="width: 16px; height: 16px;">
+                            <span>home</span>
+                        </a>
+                    </div>
+                    
+                    <!-- Book-style Layout -->
+                    <div class="card paper-texture" style="background: linear-gradient(135deg, rgba(154, 107, 81, 0.1) 0%, rgba(243, 239, 229, 0.8) 100%); border: 2px solid rgba(154, 107, 81, 0.2); border-radius: 20px; position: relative; overflow: hidden;">
+                        <!-- Book spine effect -->
+                        <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 20px; background: linear-gradient(180deg, rgba(154, 107, 81, 0.3) 0%, rgba(154, 107, 81, 0.2) 100%); border-right: 2px solid rgba(154, 107, 81, 0.3);"></div>
+                        
+                        <!-- Book content -->
+                        <div style="padding: 2rem 2rem 2rem 3rem; position: relative; z-index: 1;">
+                            <div id="recentPagesList">
+                                <!-- Recent pages will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        // Load and display insights
+        function loadInsights() {
+            const entries = JSON.parse(localStorage.getItem('nuuko_entries') || '[]');
+            const stats = JSON.parse(localStorage.getItem('nuuko_stats') || '{}');
+            
+            if (entries.length === 0) {
+                // Show empty state
+                document.getElementById('emptyState').classList.remove('hidden');
+                document.getElementById('statsGrid').classList.add('hidden');
+                return;
+            }
+            
+            // Hide empty state, show stats
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('statsGrid').classList.remove('hidden');
+            
+            // Calculate insights
+            const totalEntries = entries.length;
+            const totalWords = entries.reduce((sum, entry) => sum + (entry.wordCount || 0), 0);
+            const averageWords = totalEntries > 0 ? Math.round(totalWords / totalEntries) : 0;
+            
+            // Calculate streak (simplified - days since first entry)
+            const firstEntry = entries[entries.length - 1]; // entries are stored newest first
+            const daysSinceFirst = firstEntry ? Math.floor((Date.now() - new Date(firstEntry.createdAt).getTime()) / (1000 * 60 * 60 * 24)) + 1 : 0;
+            
+            // Update displays
+            document.getElementById('totalEntries').textContent = totalEntries.toLocaleString();
+            document.getElementById('currentStreak').textContent = Math.min(daysSinceFirst, totalEntries); // Simplified streak
+            document.getElementById('averageWords').textContent = averageWords.toLocaleString();
+            document.getElementById('totalWords').textContent = totalWords.toLocaleString();
+            
+            // Add encouraging subtexts
+            const pagesSubtext = document.getElementById('pagesSubtext');
+            if (totalEntries === 1) {
+                pagesSubtext.textContent = 'just getting started';
+            } else if (totalEntries < 10) {
+                pagesSubtext.textContent = 'building a habit';
+            } else if (totalEntries < 30) {
+                pagesSubtext.textContent = 'finding your rhythm';
+            } else {
+                pagesSubtext.textContent = 'a beautiful collection';
+            }
+            
+            const wordsNote = document.getElementById('totalWordsNote');
+            if (totalWords > 10000) {
+                wordsNote.textContent = 'basically, a short novel';
+            } else if (totalWords > 5000) {
+                wordsNote.textContent = 'like a long short story';
+            } else if (totalWords > 1000) {
+                wordsNote.textContent = 'quite a collection';
+            } else {
+                wordsNote.textContent = 'just getting started';
+            }
+            
+            // Populate recent pages
+            populateRecentPages(entries.slice(0, 3)); // Show fewer for book layout
+        }
+        
+        function populateRecentPages(recentEntries) {
+            const container = document.getElementById('recentPagesList');
+            
+            if (recentEntries.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center" style="padding: 2rem;">no recent pages</p>';
+                return;
+            }
+            
+            // Create book-style layout with left and right pages
+            const halfPoint = Math.ceil(recentEntries.length / 2);
+            const leftPages = recentEntries.slice(0, halfPoint);
+            const rightPages = recentEntries.slice(halfPoint);
+            
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 2px 1fr; gap: 2rem; min-height: 200px;">
+                    <!-- Left Pages -->
+                    <div style="border-right: none;">
+                        ${leftPages.map((entry, index) => {
+                            const date = new Date(entry.createdAt).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric'
+                            });
+                            
+                            const preview = entry.content.length > 80 
+                                ? entry.content.substring(0, 80) + '...'
+                                : entry.content;
+                            
+                            return `
+                                <div style="margin-bottom: ${index < leftPages.length - 1 ? '1.5rem' : '0'};">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                                        <h4 style="font-size: 1rem; font-weight: 600; color: var(--nuuko-espresso); margin: 0;">${date}</h4>
+                                        <div style="background: rgba(154, 107, 81, 0.6); color: white; padding: 0.25rem 0.5rem; border-radius: 8px; font-size: 0.75rem; font-weight: 500;">word</div>
+                                    </div>
+                                    <p style="font-size: 0.875rem; color: var(--nuuko-stone); line-height: 1.6; margin: 0;">${preview}</p>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    
+                    <!-- Book Center Divider -->
+                    <div style="width: 2px; background: linear-gradient(180deg, rgba(154, 107, 81, 0.3) 0%, rgba(154, 107, 81, 0.1) 100%); border-radius: 1px; margin: 1rem 0;"></div>
+                    
+                    <!-- Right Pages -->
+                    <div>
+                        ${rightPages.map((entry, index) => {
+                            const date = new Date(entry.createdAt).toLocaleDateString('en-US', {
+                                month: 'short',
+                                day: 'numeric'
+                            });
+                            
+                            const preview = entry.content.length > 80 
+                                ? entry.content.substring(0, 80) + '...'
+                                : entry.content;
+                            
+                            return `
+                                <div style="margin-bottom: ${index < rightPages.length - 1 ? '1.5rem' : '0'};">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                                        <h4 style="font-size: 1rem; font-weight: 600; color: var(--nuuko-espresso); margin: 0;">${date}</h4>
+                                        <div style="background: rgba(154, 107, 81, 0.6); color: white; padding: 0.25rem 0.5rem; border-radius: 8px; font-size: 0.75rem; font-weight: 500;">word</div>
+                                    </div>
+                                    <p style="font-size: 0.875rem; color: var(--nuuko-stone); line-height: 1.6; margin: 0;">${preview}</p>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Load insights when page loads
+        window.addEventListener('load', loadInsights);
+        
+        // Refresh insights if storage changes (from other tabs)
+        window.addEventListener('storage', loadInsights);
+    </script>
+</body>
+</html>
