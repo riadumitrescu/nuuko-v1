@@ -50,7 +50,7 @@
                 <img src="assets/icons/magic-wand-icon.svg" alt="magic prompt" style="width: 20px; height: 20px;">
                 <div>
                     <h3 class="mb-sm" style="font-size: 1.125rem;">today's reflection prompt:</h3>
-                    <p class="italic text-muted" id="writePagePrompt" style="font-size: 1rem; margin: 0; color: var(--nuuko-stone);">what surprised you today?</p>
+                    <p class="italic text-muted" id="writePagePrompt" style="font-size: 1rem; margin: 0; color: var(--nuuko-stone); cursor: pointer; border-bottom: 2px dashed rgba(154, 107, 81, 0.3); transition: all 0.3s ease; display: inline-block;" onclick="editPrompt()">what surprised you today?</p>
                 </div>
             </div>
         </section>
@@ -383,6 +383,28 @@
                 currentMoodPosition = parseFloat(draftMood);
                 moodThumb.style.left = currentMoodPosition + '%';
                 updateMoodDisplay();
+            }
+        });
+
+        // === PROMPT EDITING FUNCTIONS ===
+        function editPrompt() {
+            const currentPrompt = document.getElementById('writePagePrompt').textContent;
+            const newPrompt = prompt('What would you like to reflect on today?', currentPrompt);
+            
+            if (newPrompt && newPrompt.trim() !== '') {
+                const cleanPrompt = newPrompt.trim();
+                document.getElementById('writePagePrompt').textContent = cleanPrompt;
+                
+                // Save to localStorage for persistence
+                localStorage.setItem('nuuko_current_prompt', cleanPrompt);
+            }
+        }
+
+        // Load saved prompt on page load
+        window.addEventListener('load', () => {
+            const savedPrompt = localStorage.getItem('nuuko_current_prompt');
+            if (savedPrompt) {
+                document.getElementById('writePagePrompt').textContent = savedPrompt;
             }
         });
     </script>

@@ -46,7 +46,7 @@
             </div>
             
             <h1 class="mb-md" style="font-size: 3rem; font-weight: 700; color: var(--nuuko-espresso);">
-                hi <span id="userName" style="cursor: pointer; border-bottom: 2px dashed rgba(154, 107, 81, 0.3); transition: all 0.3s ease;" onclick="editUserName()">alex</span>!
+                hi <span id="userName" style="cursor: pointer; border-bottom: 2px dashed rgba(154, 107, 81, 0.3); transition: all 0.3s ease;" onclick="editUserName()">name</span>!
             </h1>
             <p class="mb-lg" style="font-size: 1.25rem; max-width: 400px; margin-left: auto; margin-right: auto;">let's reflect today.</p>
             
@@ -58,13 +58,13 @@
 
         <!-- Daily Prompt Section -->
         <section class="card paper-texture mb-2xl slide-up" style="animation-delay: 0.1s; max-width: 800px; margin-left: auto; margin-right: auto;">
-            <div class="flex items-center gap-xl">
-                <div style="width: 64px; height: 64px; background: linear-gradient(135deg, rgba(107, 143, 113, 0.2) 0%, rgba(154, 107, 81, 0.2) 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); flex-shrink: 0; cursor: pointer; transition: all 0.3s ease;" onclick="changePrompt()" title="Click for a new prompt">
-                    <img src="assets/icons/magic-wand-icon.svg" alt="magic wand" style="width: 28px; height: 28px;">
+            <div class="flex items-start gap-md">
+                <div style="width: 48px; height: 48px; background: linear-gradient(135deg, rgba(107, 143, 113, 0.2) 0%, rgba(154, 107, 81, 0.2) 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px); flex-shrink: 0; cursor: pointer; transition: all 0.3s ease; margin-top: 4px;" onclick="changePrompt()" title="Click for a new prompt">
+                    <img src="assets/icons/magic-wand-icon.svg" alt="magic wand" style="width: 24px; height: 24px;">
                 </div>
                 <div style="flex: 1;">
                     <h2 class="mb-sm">daily prompt</h2>
-                    <p class="mb-lg" id="dailyPrompt" style="font-size: 1.125rem; margin-bottom: 1.5rem; transition: opacity 0.3s ease;">what surprised you today?</p>
+                    <p class="mb-md" id="dailyPrompt" style="font-size: 1.125rem; transition: opacity 0.3s ease;">what surprised you today?</p>
                     <a href="write.html" class="btn btn-primary btn-lg">
                         <img src="assets/icons/icon-journal.svg" alt="write" style="width: 16px; height: 16px;">
                         <span>tap to reflect</span>
@@ -145,6 +145,21 @@
             </div>
         </section>
     </main>
+
+    <!-- Entry Modal -->
+    <div id="entryModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalDate"></h2>
+                <button id="closeModal" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="modalMood" class="modal-mood"></div>
+                <div id="modalContent" class="modal-text"></div>
+                <div id="modalStats" class="modal-stats"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer style="border-top: 1px solid rgba(141, 135, 126, 0.2); background: linear-gradient(to right, rgba(243, 239, 229, 0.8), rgba(237, 231, 219, 0.8)); margin-top: 3rem;">

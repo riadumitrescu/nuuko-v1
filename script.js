@@ -65,7 +65,7 @@ function updateStats() {
 
 // === USER PERSONALIZATION ===
 function getUserName() {
-    return localStorage.getItem('nuuko_user_name') || 'alex';
+    return localStorage.getItem('nuuko_user_name') || 'name';
 }
 
 function saveUserName(name) {
@@ -192,7 +192,7 @@ function loadLibrary() {
                         : entry.content;
                     
                     return `
-                        <div class="book-card slide-up" style="animation-delay: ${index * 0.1}s; padding: 1.5rem;">
+                        <div class="book-card slide-up" style="animation-delay: ${index * 0.1}s; padding: 1.5rem; cursor: pointer; transition: all 0.3s ease;" onclick="openEntryModal(${entry.id})">
                             <div class="flex items-center justify-between mb-md">
                                 <span class="text-sm text-muted" style="font-weight: 500;">${date}</span>
                                 ${entry.mood ? `<span style="font-size: 0.75rem; background: rgba(107, 143, 113, 0.1); color: var(--nuuko-green); padding: 0.375rem 0.75rem; border-radius: 12px; border: 1px solid rgba(107, 143, 113, 0.2);">${entry.mood}</span>` : ''}
@@ -363,6 +363,68 @@ function addGlobalEventListeners() {
     });
 }
 
+// === MODAL FUNCTIONS ===
+function openEntryModal(entryId) {
+    const entries = getEntries();
+    const entry = entries.find(e => e.id === entryId);
+    
+    if (!entry) return;
+    
+    const modal = document.getElementById('entryModal');
+    const modalDate = document.getElementById('modalDate');
+    const modalMood = document.getElementById('modalMood');
+    const modalContent = document.getElementById('modalContent');
+    const modalStats = document.getElementById('modalStats');
+    
+    // Populate modal content
+    modalDate.textContent = formatDate(new Date(entry.createdAt));
+    
+    if (entry.mood) {
+        modalMood.innerHTML = `<span>${entry.mood}</span>`;
+    } else {
+        modalMood.innerHTML = '';
+    }
+    
+    modalContent.textContent = entry.content;
+    modalStats.textContent = `${entry.wordCount || 0} words • written on ${formatDate(new Date(entry.createdAt))}`;
+    
+    // Show modal
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeEntryModal() {
+    const modal = document.getElementById('entryModal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+// Initialize modal functionality
+function initializeModal() {
+    const modal = document.getElementById('entryModal');
+    const closeBtn = document.getElementById('closeModal');
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', closeEntryModal);
+    }
+    
+    if (modal) {
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeEntryModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                closeEntryModal();
+            }
+        });
+    }
+}
+
 // === INITIALIZATION ===
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize based on current page
@@ -370,6 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (path.includes('index.html') || path === '/' || path === '') {
         initializeHomepage();
+        initializeModal();
     }
     
     // Add global functionality

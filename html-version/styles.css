@@ -249,6 +249,122 @@ p {
   z-index: 1;
 }
 
+/* === MODAL STYLES === */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(61, 52, 44, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: all 0.3s var(--ease-gentle);
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-xl);
+  padding: 0;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 
+    0 20px 60px rgba(61, 52, 44, 0.3),
+    0 8px 32px rgba(154, 107, 81, 0.2);
+  border: 1px solid rgba(141, 135, 126, 0.2);
+  backdrop-filter: blur(20px);
+  transform: scale(1);
+  transition: all 0.3s var(--ease-gentle);
+}
+
+.modal.hidden .modal-content {
+  transform: scale(0.95);
+}
+
+.modal-header {
+  padding: var(--space-xl);
+  border-bottom: 1px solid rgba(141, 135, 126, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(243, 239, 229, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%);
+}
+
+.modal-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--nuuko-espresso);
+  margin: 0;
+  font-family: var(--font-serif);
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--nuuko-stone);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  transition: all 0.3s var(--ease-gentle);
+  line-height: 1;
+}
+
+.close-btn:hover {
+  background: rgba(141, 135, 126, 0.1);
+  color: var(--nuuko-espresso);
+}
+
+.modal-body {
+  padding: var(--space-xl);
+  overflow-y: auto;
+  max-height: calc(80vh - 120px);
+}
+
+.modal-mood {
+  margin-bottom: var(--space-md);
+}
+
+.modal-mood span {
+  display: inline-block;
+  background: rgba(107, 143, 113, 0.1);
+  color: var(--nuuko-green);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid rgba(107, 143, 113, 0.2);
+}
+
+.modal-text {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--nuuko-espresso);
+  margin-bottom: var(--space-lg);
+  white-space: pre-wrap;
+  font-family: var(--font-serif);
+}
+
+.modal-stats {
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(141, 135, 126, 0.15);
+  font-size: 0.875rem;
+  color: var(--nuuko-stone);
+  font-style: italic;
+}
+
 /* Book-like entry cards */
 .book-card {
   background: rgba(255, 255, 255, 0.85);
@@ -256,11 +372,15 @@ p {
   padding: var(--space-lg);
   transition: all 0.3s var(--ease-gentle);
   cursor: pointer;
-  backdrop-filter: blur(10px);
-  box-shadow: 
-    0 2px 8px rgba(61, 52, 44, 0.06),
-    0 1px 3px rgba(61, 52, 44, 0.04);
   border: 1px solid rgba(141, 135, 126, 0.15);
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+  border-color: rgba(107, 143, 113, 0.3);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
 }

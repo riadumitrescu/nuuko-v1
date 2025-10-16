@@ -72,7 +72,7 @@ What changed:
   - Forms: Inset feel with paper texture and encouraging placeholders
   - Navigation: Warm, gentle with floating icons and lowercased labels
 - **Voice & Copy**: Applied encouraging, warm tone throughout:
-  - "hi alex!" instead of "Welcome back, Alex"
+  - "hi name!" instead of "Welcome back, Alex"
   - "tap to reflect" instead of "Start writing"
   - "no notes yet — today's a fresh page" instead of "No entries yet"
   - "your library" instead of "Recent entries"
@@ -122,7 +122,7 @@ What changed:
 - **Beautiful Typography & Voice**:
   - Perfect Inter + Crimson Pro implementation
   - Consistent encouraging voice throughout
-  - Warm, lowercase styling ("hi alex!", "tap to reflect")
+  - Warm, lowercase styling ("hi name!", "tap to reflect")
 - **Performance & Accessibility**:
   - Only ~50KB total size (CSS + JS)
   - Works completely offline
@@ -293,7 +293,7 @@ What changed:
   - No more old cached versions
 - **Personal Greeting System**:
   - Added large feather character to homepage hero
-  - Clickable name personalization (defaults to "alex")
+  - Clickable name personalization (defaults to "name")
   - Name saves to localStorage and persists
   - Beautiful "hi [name]!" greeting with edit functionality
 - **Magic Wand Prompt System**:

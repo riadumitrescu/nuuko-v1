@@ -54,7 +54,7 @@ html-version/
 - **Crimson Pro**: Elegant serif for headers and warmth
 
 ### Voice & Tone
-- "hi alex!" instead of "Welcome back, Alex"
+- "hi name!" instead of "Welcome back, Alex"
 - "tap to reflect" instead of "Start writing"
 - "no notes yet — today's a fresh page" 
 - "your library" instead of "Recent entries"

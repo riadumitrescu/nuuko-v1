@@ -29,7 +29,7 @@
 
 ### PHASE 3: HOMEPAGE LIKE THE APP ✅
 - [x] 7.0 storybook homepage redesign
-  - [x] 7.1 "Hi Alex!" greeting with feather character
+  - [x] 7.1 "Hi name!" greeting with feather character
   - [x] 7.2 daily prompt card with "What surprised you today?"
   - [x] 7.3 "Your Library" with colorful book spines
   - [x] 7.4 "Monthly Map" calendar heatmap
