@@ -1474,6 +1474,193 @@ p {
 .writing-area:focus {
   border: none;
   box-shadow: none;
+  outline: none;
+}
+
+.writing-notebook textarea:focus,
+.writing-notebook textarea:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.date-picker-shell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.entry-title-input {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  border: none;
+  background: transparent;
+  color: var(--nuuko-espresso);
+  border-bottom: 2px dashed rgba(154, 107, 81, 0.3);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.entry-title-input:focus {
+  border-color: rgba(107, 143, 113, 0.6);
+  background: rgba(255, 250, 242, 0.6);
+}
+
+.entry-title-input::placeholder {
+  color: rgba(61, 52, 44, 0.45);
+}
+
+.date-display {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(154, 107, 81, 0.2);
+  background: linear-gradient(135deg, #fffaf2, #f5ede2);
+  color: var(--nuuko-espresso);
+  border-radius: 999px;
+  padding: 0.6rem 0.9rem;
+  font-size: 1rem;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7), 0 8px 18px rgba(61, 52, 44, 0.05);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.date-display:hover {
+  border-color: rgba(154, 107, 81, 0.35);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.8), 0 10px 22px rgba(61, 52, 44, 0.08);
+}
+
+.date-display:focus-visible {
+  outline: 2px solid rgba(107, 143, 113, 0.5);
+  outline-offset: 2px;
+}
+
+.date-display-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.date-popover {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  transform: none;
+  width: 320px;
+  min-width: 280px;
+  background: linear-gradient(135deg, rgba(255, 250, 242, 0.96), rgba(246, 238, 228, 0.98));
+  border: 1px solid rgba(154, 107, 81, 0.18);
+  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(61, 52, 44, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  padding: 1rem;
+  z-index: 50;
+}
+
+.date-popover-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  color: var(--nuuko-espresso);
+  font-weight: 700;
+}
+
+.date-month {
+  text-transform: lowercase;
+}
+
+.date-nav {
+  border: 1px solid rgba(154, 107, 81, 0.2);
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--nuuko-espresso);
+  border-radius: 12px;
+  width: 36px;
+  height: 32px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.date-nav:hover {
+  border-color: rgba(154, 107, 81, 0.35);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.date-nav.disabled, .date-nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: rgba(154, 107, 81, 0.15);
+}
+
+.date-weekdays, .date-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.3rem;
+}
+
+.date-weekdays {
+  margin: 0.35rem 0 0.2rem;
+  color: rgba(61, 52, 44, 0.7);
+  font-size: 0.8rem;
+  text-transform: lowercase;
+}
+
+.date-weekdays span {
+  text-align: center;
+}
+
+.date-day {
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--nuuko-espresso);
+  border-radius: 12px;
+  padding: 0.55rem 0.35rem;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+.date-day:hover {
+  border-color: rgba(107, 143, 113, 0.35);
+  background: rgba(107, 143, 113, 0.12);
+}
+
+.date-day.selected {
+  background: linear-gradient(135deg, rgba(107, 143, 113, 0.8), rgba(154, 107, 81, 0.8));
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 8px 16px rgba(107, 143, 113, 0.2);
+}
+
+.date-day.today:not(.selected) {
+  border-color: rgba(154, 107, 81, 0.35);
+}
+
+.date-day.disabled {
+  color: rgba(61, 52, 44, 0.35);
+  cursor: not-allowed;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.date-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+}
+
+.date-foot-btn {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.9rem;
+  color: var(--nuuko-espresso);
+}
+
+.date-popover.hidden {
+  display: none;
 }
 
 /* === MOOD SPECTRUM === */
@@ -1825,6 +2012,95 @@ p {
   
   .notebook-holes {
     display: none !important;
+  }
+}
+
+.summary-toggle-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 16px;
+  border: 1px solid rgba(154, 107, 81, 0.15);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.85) 0%, rgba(250, 245, 236, 0.95) 100%);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+.summary-toggle-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.summary-toggle-label {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(61, 52, 44, 0.6);
+}
+
+.summary-toggle-subtext {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--nuuko-espresso);
+}
+
+.summary-toggle-control {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 48px;
+  height: 28px;
+  border-radius: 999px;
+  background: rgba(107, 143, 113, 0.35);
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.summary-toggle-control input {
+  opacity: 0;
+  position: absolute;
+  inset: 0;
+  margin: 0;
+}
+
+.summary-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(61, 52, 44, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.summary-toggle-control input:checked + .summary-toggle-thumb {
+  transform: translateX(20px);
+  box-shadow: 0 6px 16px rgba(107, 143, 113, 0.25);
+}
+
+.summary-toggle-control input:focus-visible + .summary-toggle-thumb {
+  outline: 2px solid var(--nuuko-green);
+  outline-offset: 2px;
+}
+
+.summary-toggle-control input:checked ~ .summary-toggle-thumb,
+.summary-toggle-control input:checked + .summary-toggle-thumb {
+  transform: translateX(20px);
+}
+
+@media (max-width: 600px) {
+  .summary-toggle-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .summary-toggle-control {
+    align-self: flex-start;
   }
 }
 

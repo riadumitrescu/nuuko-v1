@@ -43,8 +43,36 @@
         
         <!-- Header -->
         <header class="text-center mb-2xl fade-in">
-            <h1 class="mb-sm" id="pageTitle" style="font-size: 2.5rem;">new entry</h1>
-            <p class="text-muted mb-lg" id="currentDate" style="font-size: 1.125rem;">monday, january 27</p>
+            <input
+                id="pageTitle"
+                class="entry-title-input mb-sm"
+                type="text"
+                value="new entry"
+                aria-label="entry title"
+            >
+            <div class="date-picker-shell">
+                <p class="text-muted" id="currentDate" style="font-size: 1.125rem; margin: 0;">monday, january 27</p>
+                <button type="button" class="date-display" id="datePickerTrigger" aria-expanded="false" aria-controls="datePickerPopover">
+                    <span id="dateDisplayValue">11/20/2025</span>
+                    <svg class="date-display-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+                        <path d="M208 32h-20V24a12 12 0 0 0-24 0v8h-48V24a12 12 0 0 0-24 0v8H72a24.1 24.1 0 0 0-24 24v144a24.1 24.1 0 0 0 24 24h136a24.1 24.1 0 0 0 24-24V56a24.1 24.1 0 0 0-24-24Zm8 168a8 8 0 0 1-8 8H72a8 8 0 0 1-8-8V104h152Zm0-120H64V56a8 8 0 0 1 8-8h16v8a12 12 0 0 0 24 0v-8h48v8a12 12 0 0 0 24 0v-8h16a8 8 0 0 1 8 8Z" />
+                    </svg>
+                </button>
+                <input type="hidden" id="entryDate" name="entryDate" aria-label="choose entry date">
+                <div id="datePickerPopover" class="date-popover hidden" role="dialog" aria-label="choose entry date">
+                    <div class="date-popover-header">
+                        <button type="button" class="date-nav" id="datePrevMonth" aria-label="previous month">‹</button>
+                        <div class="date-month" id="dateMonthLabel">November 2025</div>
+                        <button type="button" class="date-nav" id="dateNextMonth" aria-label="next month">›</button>
+                    </div>
+                    <div class="date-weekdays" id="dateWeekdays"></div>
+                    <div class="date-grid" id="dateGrid"></div>
+                    <div class="date-footer">
+                        <button type="button" class="btn-ghost date-foot-btn" id="dateToday">today</button>
+                        <button type="button" class="btn-ghost date-foot-btn" id="dateClose">close</button>
+                    </div>
+                </div>
+            </div>
             <div style="width: 64px; height: 4px; background: linear-gradient(to right, var(--nuuko-green), var(--nuuko-clay)); border-radius: 2px; margin: 0 auto; opacity: 0.6;"></div>
         </header>
 
@@ -53,8 +81,8 @@
             <div class="flex flex-col gap-md">
                 <div class="flex items-center justify-between gap-md">
                     <div class="flex items-center gap-md">
-                        <button type="button" onclick="changePrompt()" aria-label="new prompt" style="border: none; width: 44px; height: 44px; border-radius: 50%; background: rgba(107, 143, 113, 0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: inset 0 1px 2px rgba(255,255,255,0.5);">
-                            <img src="assets/icons/magic-wand-icon.svg" alt="change prompt" style="width: 18px; height: 18px;">
+                        <button type="button" onclick="changePrompt()" aria-label="new prompt" style="border: none; width: 48px; height: 48px; border-radius: 50%; background: rgba(107, 143, 113, 0.18); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: inset 0 1px 2px rgba(255,255,255,0.5);">
+                            <img src="assets/icons/magic-wand-icon.svg" alt="change prompt" style="width: 22px; height: 22px;">
                         </button>
                         <div>
                             <p style="margin: 0; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(61,52,44,0.6);">today's reflection prompt</p>
@@ -62,11 +90,15 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-xs">
-                        <button type="button" aria-label="edit prompt" onclick="startPromptEdit()" style="border: none; width: 32px; height: 32px; border-radius: 50%; background: rgba(154, 107, 81, 0.15); color: var(--nuuko-clay); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                            ✏️
+                        <button type="button" aria-label="edit prompt" onclick="startPromptEdit()" style="border: 1px solid rgba(61,52,44,0.12); width: 40px; height: 40px; border-radius: 50%; background: rgba(61, 52, 44, 0.06); color: var(--nuuko-espresso); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+                                <path d="M225.9 74.6 181.4 30.1a13.9 13.9 0 0 0-19.8 0L32.9 158.8a8.1 8.1 0 0 0-2.3 5.1l-4 48a8 8 0 0 0 8.7 8.7l48-4a8.1 8.1 0 0 0 5.1-2.3L225.9 94.4a13.9 13.9 0 0 0 0-19.8ZM91.3 204.7l-30.3 2.5 2.5-30.3L145 95.4l27.8 27.8Zm88.4-88.4L152 88.6l27.8-27.8 27.8 27.8Z" />
+                            </svg>
                         </button>
-                        <button type="button" aria-label="hide prompt" onclick="dismissPromptSection()" style="border: none; width: 32px; height: 32px; border-radius: 50%; background: rgba(214, 126, 126, 0.15); color: var(--mood-anxious); display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                            ✕
+                        <button type="button" aria-label="hide prompt" onclick="dismissPromptSection()" style="border: 1px solid rgba(61,52,44,0.12); width: 40px; height: 40px; border-radius: 50%; background: rgba(61, 52, 44, 0.06); color: var(--nuuko-espresso); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+                                <path d="M205.7 58.3a8 8 0 0 0-11.4 0L128 124.7 61.7 58.3a8 8 0 0 0-11.4 11.4L116.7 136l-66.4 66.3a8 8 0 0 0 11.4 11.4L128 147.3l66.3 66.4a8 8 0 0 0 11.4-11.4L139.3 136l66.4-66.3a8 8 0 0 0 0-11.4Z" />
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -204,12 +236,15 @@
                 <p id="editingBannerText" style="margin: 0; font-size: 0.95rem; color: var(--nuuko-espresso);"></p>
                 <button id="cancelEditingButton" type="button" class="btn btn-ghost" style="padding: 0.35rem 0.75rem;">start fresh</button>
             </div>
-            <div>
-                <label for="summaryToggle" style="display: block; font-size: 0.875rem; color: var(--nuuko-stone); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;">include in ai summaries</label>
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <input type="checkbox" id="summaryToggle" checked aria-label="Include this entry when generating summaries" style="width: 18px; height: 18px;">
-                    <span style="font-size: 0.95rem; color: var(--nuuko-espresso);">keep this reflection in the next summary</span>
+            <div class="summary-toggle-card">
+                <div class="summary-toggle-copy">
+                    <p class="summary-toggle-label">include in ai summaries</p>
+                    <p class="summary-toggle-subtext">keep this reflection in the next summary</p>
                 </div>
+                <label class="summary-toggle-control" for="summaryToggle">
+                    <input type="checkbox" id="summaryToggle" checked aria-label="Include this entry when generating summaries">
+                    <span class="summary-toggle-thumb" aria-hidden="true"></span>
+                </label>
             </div>
         </section>
 
@@ -297,13 +332,22 @@
                 })
                 : Promise.resolve();
             
+            const dateInput = document.getElementById('entryDate');
+            const datePickerTrigger = document.getElementById('datePickerTrigger');
+            const datePopover = document.getElementById('datePickerPopover');
+            const dateGrid = document.getElementById('dateGrid');
+            const dateMonthLabel = document.getElementById('dateMonthLabel');
+            const dateWeekdays = document.getElementById('dateWeekdays');
+            const datePrevMonth = document.getElementById('datePrevMonth');
+            const dateNextMonth = document.getElementById('dateNextMonth');
+            const dateTodayButton = document.getElementById('dateToday');
+            const dateCloseButton = document.getElementById('dateClose');
+            const dateDisplayValue = document.getElementById('dateDisplayValue');
+            let currentDateLabel = '';
+            let calendarCursor = startOfMonth(new Date());
             const today = new Date();
-            const dateString = today.toLocaleDateString('en-US', {
-                weekday: 'long',
-                month: 'long',
-                day: 'numeric'
-            }).toLowerCase();
-            currentDateDisplay.textContent = dateString;
+            initializeDateControls(today);
+            updateDateDisplay(today);
             
             init();
             
@@ -346,6 +390,18 @@
                 
                 tagsInput?.addEventListener('input', persistDraft);
                 summaryToggle?.addEventListener('change', persistDraft);
+                dateInput?.addEventListener('change', handleDateChange);
+                datePickerTrigger?.addEventListener('click', toggleCalendar);
+                datePrevMonth?.addEventListener('click', () => shiftCalendar(-1));
+                dateNextMonth?.addEventListener('click', () => shiftCalendar(1));
+                dateTodayButton?.addEventListener('click', () => jumpToDate(startOfDay(new Date())));
+                dateCloseButton?.addEventListener('click', closeCalendar);
+                document.addEventListener('click', handleClickOutsideCalendar);
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        closeCalendar();
+                    }
+                });
                 
                 saveButton?.addEventListener('click', saveEntry);
                 deleteButton?.addEventListener('click', handleDeleteEntry);
@@ -429,14 +485,17 @@
                 }
             }
             function evaluatePageTitle() {
+                if (!pageTitle) return;
                 const entries = window.NuukoStorage
                     ? NuukoStorage.getEntriesSnapshot()
                     : JSON.parse(localStorage.getItem('nuuko_entries') || '[]');
                 
                 if (entries.length === 0) {
-                    pageTitle.textContent = 'first entry';
+                    pageTitle.value = 'first entry';
+                    pageTitle.placeholder = 'first entry';
                 } else if (!editingEntry) {
-                    pageTitle.textContent = 'new entry';
+                    pageTitle.value = 'new entry';
+                    pageTitle.placeholder = 'new entry';
                 }
             }
             
@@ -555,12 +614,22 @@
                 
                 deleteButton.classList.remove('hidden');
                 editingBanner?.classList.remove('hidden');
+                if (pageTitle) {
+                    pageTitle.value = entry.title || 'entry';
+                }
+                if (dateInput && entry.createdAt) {
+                    const entryDate = startOfDay(new Date(entry.createdAt));
+                    dateInput.value = formatDateInput(entryDate);
+                    updateDateDisplay(entryDate);
+                    calendarCursor = startOfMonth(entryDate);
+                    renderCalendar();
+                }
+
                 const formattedDate = entry.createdAt
                     ? new Date(entry.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }).toLowerCase()
                     : 'this page';
                 editingBannerText.textContent = `editing entry from ${formattedDate}`;
                 saveButtonText.textContent = 'save changes';
-                pageTitle.textContent = 'edit entry';
                 
                 applyDraftIfRelevant(true);
                 showStatus('loaded your earlier page', 'info');
@@ -587,7 +656,8 @@
                 saveButton.disabled = true;
                 
                 const promptSnapshot = writePagePrompt?.textContent?.trim() || '';
-                const createdAtISO = editingEntry?.createdAt || new Date().toISOString();
+                const titleValue = (pageTitle?.value || '').trim() || 'entry';
+                const createdAtISO = getSelectedDateISO();
                 const createdAtDate = new Date(createdAtISO);
                 const tagsArray = parseTagsFromInput();
                 const timeBucket = bucketTimeOfDay(createdAtDate);
@@ -608,7 +678,8 @@
                     wordCount,
                     createdAt: createdAtISO,
                     updatedAt: new Date().toISOString(),
-                    date: dateString,
+                    title: titleValue,
+                    date: currentDateLabel,
                     prompt: promptSnapshot,
                     promptId: promptSnapshot ? generatePromptId(promptSnapshot) : undefined,
                     includeInSummaries: summaryToggle?.checked !== false
@@ -718,11 +789,17 @@
                 deleteButton.classList.add('hidden');
                 editingBanner?.classList.add('hidden');
                 saveButtonText.textContent = 'save page';
-                pageTitle.textContent = 'new entry';
+                if (pageTitle) {
+                    pageTitle.value = 'new entry';
+                    pageTitle.placeholder = 'new entry';
+                }
                 evaluatePageTitle();
                 updateStats();
                 autoResize();
                 syncPromptFromSettings();
+                const today = startOfDay(new Date());
+                initializeDateControls(today);
+                updateDateDisplay(today);
                 window.history.replaceState({}, '', 'write.html');
                 clearDraft();
                 clearStatus();
@@ -802,6 +879,8 @@
                     moodPosition: currentMoodPosition,
                     tagsValue: tagsInput?.value || '',
                     summaryIncluded: summaryToggle?.checked !== false,
+                    entryDate: dateInput?.value || '',
+                    entryTitle: pageTitle?.value || '',
                     entryId: editingEntry ? editingEntry.id : null,
                     timestamp: Date.now()
                 };
@@ -852,9 +931,18 @@
                 if (draft.tagsValue !== undefined && tagsInput) {
                     tagsInput.value = draft.tagsValue;
                 }
-                
+
                 if (typeof draft.summaryIncluded === 'boolean' && summaryToggle) {
                     summaryToggle.checked = draft.summaryIncluded;
+                }
+
+                if (draft.entryDate && dateInput) {
+                    dateInput.value = draft.entryDate;
+                    handleDateChange();
+                }
+
+                if (draft.entryTitle && pageTitle) {
+                    pageTitle.value = draft.entryTitle;
                 }
             }
             
@@ -866,34 +954,6 @@
                 return entries.find(entry => String(entry.id) === String(entryId));
             }
             
-            window.startPromptEdit = openPromptEditor;
-            window.cancelPromptEdit = () => closePromptEditor(true);
-            window.savePromptEdit = saveEditedPrompt;
-            window.dismissPromptSection = hidePromptCard;
-            window.restorePromptSection = showPromptCard;
-
-            window.changePrompt = async function changePrompt() {
-                if (promptEngine && !editingEntry) {
-                    try {
-                        const next = currentPromptData
-                            ? await promptEngine.refreshPrompt()
-                            : await promptEngine.getPrompt();
-                        currentPromptData = next;
-                        applyPromptToUI(next.primaryPrompt);
-                        return;
-                    } catch (error) {
-                        console.warn('[Nuuko] prompt refresh fallback', error);
-                    }
-                }
-
-                const currentPrompt = writePagePrompt?.textContent || 'what surprised you today?';
-                const newPrompt = FALLBACK_PROMPTS.find((p) => p !== currentPrompt) || currentPrompt;
-                applyPromptToUI(newPrompt);
-            };
-        })();
-    </script>
-</body>
-</html>
             function openPromptEditor() {
                 if (!promptEditor || !promptEditInput) return;
                 promptEditInput.value = writePagePrompt?.textContent?.trim() || '';
@@ -931,3 +991,214 @@
                 promptSectionCard.classList.remove('hidden');
                 promptHiddenNotice.classList.add('hidden');
             }
+
+            window.startPromptEdit = openPromptEditor;
+            window.cancelPromptEdit = () => closePromptEditor(true);
+            window.savePromptEdit = saveEditedPrompt;
+            window.dismissPromptSection = hidePromptCard;
+            window.restorePromptSection = showPromptCard;
+
+            window.changePrompt = async function changePrompt() {
+                if (promptEngine && !editingEntry) {
+                    try {
+                        const next = currentPromptData
+                            ? await promptEngine.refreshPrompt()
+                            : await promptEngine.getPrompt();
+                        currentPromptData = next;
+                        applyPromptToUI(next.primaryPrompt);
+                        return;
+                    } catch (error) {
+                        console.warn('[Nuuko] prompt refresh fallback', error);
+                    }
+                }
+
+                const currentPrompt = writePagePrompt?.textContent || 'what surprised you today?';
+                const newPrompt = FALLBACK_PROMPTS.find((p) => p !== currentPrompt) || currentPrompt;
+                applyPromptToUI(newPrompt);
+            };
+
+            function initializeDateControls(today) {
+                if (!dateInput) return;
+                const todayInput = formatDateInput(today);
+                dateInput.max = todayInput;
+                if (!dateInput.value) {
+                    dateInput.value = todayInput;
+                }
+                calendarCursor = startOfMonth(parseDateInput(dateInput.value) || today);
+                renderCalendar();
+            }
+
+            function handleDateChange() {
+                if (!dateInput) return;
+                const parsed = parseDateInput(dateInput.value);
+                const today = startOfDay(new Date());
+                let finalDate = parsed || today;
+                if (finalDate.getTime() > today.getTime()) {
+                    finalDate = today;
+                    dateInput.value = formatDateInput(finalDate);
+                    showStatus('future dates are not allowed, using today instead.', 'info');
+                }
+                updateDateDisplay(finalDate);
+                calendarCursor = startOfMonth(finalDate);
+                renderCalendar();
+                persistDraft();
+            }
+
+            function getSelectedDateISO() {
+                if (!dateInput) return new Date().toISOString();
+                const parsed = parseDateInput(dateInput.value);
+                const today = startOfDay(new Date());
+                const safeDate = parsed && parsed.getTime() <= today.getTime() ? parsed : today;
+                // Anchor at noon local time to avoid timezone rollover
+                safeDate.setHours(12, 0, 0, 0);
+                return safeDate.toISOString();
+            }
+
+            function parseDateInput(value) {
+                if (!value) return null;
+                const [year, month, day] = value.split('-').map((v) => parseInt(v, 10));
+                if (!year || !month || !day) return null;
+                const date = new Date(year, month - 1, day);
+                if (Number.isNaN(date.getTime())) return null;
+                return startOfDay(date);
+            }
+
+            function formatDateInput(date) {
+                const d = new Date(date);
+                const year = d.getFullYear();
+                const month = String(d.getMonth() + 1).padStart(2, '0');
+                const day = String(d.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            }
+
+            function startOfDay(date) {
+                const d = new Date(date);
+                d.setHours(0, 0, 0, 0);
+                return d;
+            }
+
+            function startOfMonth(date) {
+                const d = new Date(date);
+                d.setDate(1);
+                d.setHours(0, 0, 0, 0);
+                return d;
+            }
+
+            function updateDateDisplay(date) {
+                if (!currentDateDisplay) return;
+                const label = date.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    month: 'long',
+                    day: 'numeric'
+                }).toLowerCase();
+                currentDateLabel = label;
+                currentDateDisplay.textContent = label;
+                if (dateDisplayValue) {
+                    dateDisplayValue.textContent = date.toLocaleDateString('en-US');
+                }
+            }
+
+            function toggleCalendar() {
+                if (!datePopover) return;
+                const isHidden = datePopover.classList.contains('hidden');
+                if (isHidden) {
+                    renderCalendar();
+                    datePopover.classList.remove('hidden');
+                    datePickerTrigger?.setAttribute('aria-expanded', 'true');
+                } else {
+                    closeCalendar();
+                }
+            }
+
+            function closeCalendar() {
+                datePopover?.classList.add('hidden');
+                datePickerTrigger?.setAttribute('aria-expanded', 'false');
+            }
+
+            function handleClickOutsideCalendar(event) {
+                if (!datePopover || datePopover.classList.contains('hidden')) return;
+                if (datePopover.contains(event.target) || datePickerTrigger.contains(event.target)) return;
+                closeCalendar();
+            }
+
+            function shiftCalendar(deltaMonths) {
+                if (typeof deltaMonths !== 'number') return;
+                const next = new Date(calendarCursor);
+                next.setMonth(next.getMonth() + deltaMonths);
+                const today = startOfMonth(startOfDay(new Date()));
+                if (next > today) {
+                    calendarCursor = today;
+                } else {
+                    calendarCursor = next;
+                }
+                renderCalendar();
+            }
+
+            function jumpToDate(date) {
+                if (!dateInput) return;
+                dateInput.value = formatDateInput(date);
+                handleDateChange();
+                closeCalendar();
+            }
+
+            function renderCalendar() {
+                if (!dateGrid || !dateMonthLabel || !dateWeekdays) return;
+                const today = startOfDay(new Date());
+                const selected = parseDateInput(dateInput?.value) || today;
+                const monthStart = startOfMonth(calendarCursor || selected);
+                const monthLabel = monthStart.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toLowerCase();
+                dateMonthLabel.textContent = monthLabel;
+
+                if (!dateWeekdays.dataset.filled) {
+                    const days = ['s', 'm', 't', 'w', 't', 'f', 's'];
+                    dateWeekdays.innerHTML = days.map((d) => `<span>${d}</span>`).join('');
+                    dateWeekdays.dataset.filled = 'true';
+                }
+
+                const daysInMonth = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0).getDate();
+                const todayMonth = startOfMonth(today);
+                const isCurrentMonth = monthStart.getTime() === todayMonth.getTime();
+                if (dateNextMonth) {
+                    dateNextMonth.disabled = isCurrentMonth;
+                    dateNextMonth.classList.toggle('disabled', isCurrentMonth);
+                }
+                const firstDayIndex = monthStart.getDay();
+                const cells = [];
+                for (let i = 0; i < firstDayIndex; i += 1) {
+                    cells.push('<div></div>');
+                }
+                for (let day = 1; day <= daysInMonth; day += 1) {
+                    const current = new Date(monthStart);
+                    current.setDate(day);
+                    const currentKey = current.toISOString();
+                    const isToday = current.getTime() === today.getTime();
+                    const isSelected = selected && current.getTime() === selected.getTime();
+                    const isFuture = current.getTime() > today.getTime();
+                    const classes = ['date-day'];
+                    if (isToday) classes.push('today');
+                    if (isSelected) classes.push('selected');
+                    if (isFuture) classes.push('disabled');
+                    const disabledAttr = isFuture ? 'aria-disabled="true"' : '';
+                    cells.push(`
+                        <button type="button" class="${classes.join(' ')}" data-date="${currentKey}" ${disabledAttr}>
+                            ${day}
+                        </button>
+                    `);
+                }
+
+                dateGrid.innerHTML = cells.join('');
+                dateGrid.querySelectorAll('.date-day').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        if (button.classList.contains('disabled')) return;
+                        const value = button.dataset.date;
+                        if (!value || !dateInput) return;
+                        dateInput.value = value.slice(0, 10);
+                        handleDateChange();
+                        closeCalendar();
+                    });
+                });
+            }
+        })();
+    </script>
+</body>
+</html>
