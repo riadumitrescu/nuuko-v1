@@ -4,21 +4,34 @@ const PAPER_TEXTURE =
   'radial-gradient(circle at 10% 20%, rgba(255,255,255,0.72) 0, rgba(249,242,231,0.75) 32%, rgba(246,237,224,0.8) 65%, #f7f1e5 100%), url("data:image/svg+xml,%3Csvg width=\'160\' height=\'160\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cdefs%3E%3Cpattern id=\'p\' x=\'0\' y=\'0\' width=\'32\' height=\'32\' patternUnits=\'userSpaceOnUse\'%3E%3Ccircle cx=\'1\' cy=\'1\' r=\'1\' fill=\'%23d8cbb4\' fill-opacity=\'0.12\'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width=\'160\' height=\'160\' fill=\'url(%23p)\'/%3E%3C/svg%3E")';
 
 const WRAPPED_MOUNT_ID = 'wrappedMount';
+const DEFAULT_CADENCE = 'weekly';
+const CADENCE_WINDOWS = { weekly: 7, monthly: 30 };
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 let pendingRender = null;
+let activeCadence = DEFAULT_CADENCE;
 
 document.addEventListener('DOMContentLoaded', () => {
+  setupCadenceControls();
   scheduleRender();
 });
 
 window.addEventListener('nuuko:storage', (event) => {
   const type = event?.detail?.type;
-  if (type === 'entries' || type === 'stats') {
+  if (type === 'entries' || type === 'stats' || type === 'settings') {
     scheduleRender();
   }
 });
 
-async function scheduleRender() {
+async function scheduleRender(options = {}) {
+  if (options.immediate) {
+    if (pendingRender) {
+      cancelAnimationFrame(pendingRender);
+      pendingRender = null;
+    }
+    await renderWrappedSection();
+    return;
+  }
   if (pendingRender) return;
   pendingRender = requestAnimationFrame(async () => {
     pendingRender = null;
@@ -26,24 +39,93 @@ async function scheduleRender() {
   });
 }
 
+function setupCadenceControls() {
+  const group = document.getElementById('wrappedCadenceGroup');
+  if (!group) return;
+  group.querySelectorAll('.wrapped-cadence-btn').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const next = button.dataset.cadence === 'monthly' ? 'monthly' : 'weekly';
+      if (next === activeCadence) return;
+      activeCadence = next;
+      highlightCadence(next);
+      if (window.NuukoStorage?.updateSettings) {
+        try {
+          await window.NuukoStorage.updateSettings({ wrappedCadence: next });
+        } catch (error) {
+          console.warn('[NuukoWrapped] failed to save cadence preference', error);
+        }
+      }
+      scheduleRender({ immediate: true });
+    });
+  });
+}
+
+function highlightCadence(value) {
+  const group = document.getElementById('wrappedCadenceGroup');
+  if (!group) return;
+  group.querySelectorAll('.wrapped-cadence-btn').forEach((button) => {
+    const isActive = button.dataset.cadence === value;
+    button.classList.toggle('active', isActive);
+  });
+}
+
 async function renderWrappedSection() {
   const mount = document.getElementById(WRAPPED_MOUNT_ID);
   if (!mount) return;
 
-  const entries = await getEntriesSnapshot();
+  const [entries, settings] = await Promise.all([
+    getEntriesSnapshot(),
+    getSettingsSnapshot(),
+  ]);
+
+  const cadence = settings.wrappedCadence || DEFAULT_CADENCE;
+  activeCadence = cadence;
+  highlightCadence(cadence);
+
   if (!entries.length) {
     mount.innerHTML = renderEmptyState();
+    updateWrappedHeading();
     return;
   }
 
-  const metrics = computeWrappedMetrics(entries);
+  const period = determineWrappedWindow(entries, cadence);
+  if (!period) {
+    mount.innerHTML = renderEmptyState();
+    updateWrappedHeading();
+    return;
+  }
+
+  const metrics = computeWrappedMetrics(entries, {
+    rangeStart: period.rangeStart,
+    rangeEnd: period.rangeEnd,
+  });
+  const windowEntries = metrics.entries || [];
+  if (!windowEntries.length) {
+    mount.innerHTML = renderEmptyState();
+    updateWrappedHeading();
+    return;
+  }
+
   const reflection = craftReflection(metrics);
-  const quotes = pickStandoutQuotes(entries, 3);
-  const avoidance = computeAvoidance(entries);
-  const currentStreak = computeCurrentStreak(entries);
+  const quotes = Array.isArray(metrics.quotes) && metrics.quotes.length
+    ? metrics.quotes
+    : pickStandoutQuotes(windowEntries, 3);
+  const avoidance = computeAvoidance(windowEntries);
+  const currentStreak = computeCurrentStreak(windowEntries);
+  const periodMeta = formatPeriodMetadata(period);
+  updateWrappedHeading(periodMeta);
 
   mount.innerHTML = '';
-  mount.appendChild(buildWrappedLayout({ metrics, quotes, reflection, avoidance, currentStreak }));
+  mount.appendChild(
+    buildWrappedLayout({
+      metrics,
+      quotes,
+      reflection,
+      avoidance,
+      currentStreak,
+      period: periodMeta,
+    })
+  );
 }
 
 async function getEntriesSnapshot() {
@@ -60,27 +142,141 @@ async function getEntriesSnapshot() {
     : [];
 }
 
+async function getSettingsSnapshot() {
+  if (!window.NuukoStorage) return {};
+  try {
+    if (window.NuukoStorage.ready) {
+      await window.NuukoStorage.ready;
+    }
+  } catch (error) {
+    console.warn('[NuukoWrapped] settings not ready', error);
+  }
+  return window.NuukoStorage.getSettingsSnapshot
+    ? window.NuukoStorage.getSettingsSnapshot()
+    : {};
+}
+
 function renderEmptyState() {
   return `
     <div class="rounded-3xl border border-amber-100 bg-white/70 p-10 text-center shadow-[0_20px_50px_rgba(120,85,50,0.08)]" style="background-image: ${PAPER_TEXTURE};">
       <p class="text-sm uppercase tracking-[0.25em] text-amber-700/70 mb-3">wrapped</p>
       <p class="font-serif text-2xl text-amber-900 mb-2">Your collage will appear here</p>
-      <p class="text-amber-700/80">Write a few entries and share a summary to unlock this view.</p>
+      <p class="text-amber-700/80">Write a few entries and we&apos;ll gently assemble your first collage.</p>
     </div>
   `;
 }
 
-function buildWrappedLayout({ metrics, quotes, reflection, avoidance, currentStreak }) {
+function determineWrappedWindow(entries = [], cadence = DEFAULT_CADENCE) {
+  if (!Array.isArray(entries) || entries.length === 0) return null;
+  const timestamps = entries
+    .map((entry) => {
+      const ts = new Date(entry.createdAt || entry.timestamp || entry.date).getTime();
+      return Number.isNaN(ts) ? null : ts;
+    })
+    .filter(Boolean)
+    .sort((a, b) => a - b);
+  if (!timestamps.length) return null;
+
+  const windowDays = CADENCE_WINDOWS[cadence] || CADENCE_WINDOWS[DEFAULT_CADENCE];
+  const windowMs = windowDays * DAY_MS;
+  const anchorDate = new Date(timestamps[0]);
+  anchorDate.setHours(0, 0, 0, 0);
+  const latestTs = timestamps[timestamps.length - 1];
+  const offset = Math.max(0, latestTs - anchorDate.getTime());
+  const windowIndex = Math.floor(offset / windowMs);
+  const rangeStart = new Date(anchorDate.getTime() + windowIndex * windowMs);
+  const rangeEnd = new Date(Math.min(rangeStart.getTime() + windowMs - 1, Date.now()));
+  return {
+    cadence,
+    rangeStart,
+    rangeEnd,
+    anchorDate,
+  };
+}
+
+function formatPeriodMetadata(period = {}) {
+  if (!period.rangeStart || !period.rangeEnd) return null;
+  const cadence = period.cadence || DEFAULT_CADENCE;
+  const monthName = period.rangeStart.toLocaleString('en-US', { month: 'long' }).toLowerCase();
+  const weekNumber = getWeekOfMonth(period.rangeStart);
+  const title =
+    cadence === 'monthly'
+      ? `${monthName} ${period.rangeStart.getFullYear()}`
+      : `week ${weekNumber} of ${monthName}`;
+  const rangeLabel = formatRangeLabel(period.rangeStart, period.rangeEnd);
+  const detailLabel = `${cadence} cadence · since ${formatAnchorLabel(period.anchorDate || period.rangeStart)}`;
+  return {
+    ...period,
+    title,
+    rangeLabel,
+    detailLabel,
+    cadenceLabel: cadence,
+  };
+}
+
+function formatRangeLabel(start, end) {
+  const sameYear = start.getFullYear() === end.getFullYear();
+  const startOptions = { month: 'short', day: 'numeric' };
+  const endOptions = { month: 'short', day: 'numeric' };
+  if (!sameYear) {
+    startOptions.year = 'numeric';
+    endOptions.year = 'numeric';
+  }
+  const startLabel = start.toLocaleString('en-US', startOptions).toLowerCase();
+  const endLabel = end.toLocaleString('en-US', endOptions).toLowerCase();
+  if (sameYear) {
+    return `${startLabel} – ${endLabel}, ${start.getFullYear()}`;
+  }
+  return `${startLabel} – ${endLabel}`;
+}
+
+function formatAnchorLabel(date) {
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) return 'day one';
+  return date
+    .toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    .toLowerCase();
+}
+
+function getWeekOfMonth(date) {
+  return Math.floor((date.getDate() - 1) / 7) + 1;
+}
+
+function updateWrappedHeading(meta = null) {
+  const headingEl = document.getElementById('wrappedHeading');
+  const subcopyEl = document.getElementById('wrappedSubcopy');
+  const rangeEl = document.getElementById('wrappedRangeLabel');
+  if (!headingEl || !subcopyEl) return;
+  if (!meta) {
+    headingEl.textContent = 'your gentle collage';
+    subcopyEl.textContent = "We'll prepare a cozy collage of your habits once some entries are ready.";
+    if (rangeEl) {
+      rangeEl.textContent = '';
+      rangeEl.classList.add('hidden');
+    }
+    return;
+  }
+  headingEl.textContent = `nuuko wrapped for ${meta.title}`;
+  subcopyEl.textContent = meta.rangeLabel;
+  if (rangeEl) {
+    rangeEl.textContent = meta.detailLabel || '';
+    rangeEl.classList.toggle('hidden', !meta.detailLabel);
+  }
+}
+
+function buildWrappedLayout({ metrics, quotes, reflection, avoidance, currentStreak, period }) {
   const container = document.createElement('div');
   container.className = 'rounded-[32px] bg-[#f7f1e5]/70 p-1';
 
   const header = document.createElement('div');
   header.className =
     'rounded-3xl border border-amber-100 bg-white/75 px-8 py-8 text-center shadow-[0_20px_50px_rgba(120,85,50,0.08)]';
+  const cadenceLabel = period?.cadenceLabel === 'monthly' ? 'monthly collage' : 'weekly collage';
+  const headingText = period?.title ? period.title : 'your week with nuuko';
+  const rangeText = period?.rangeLabel || 'A gentle collage of words, moods, and tiny rituals.';
   header.innerHTML = `
-    <p class="text-sm uppercase tracking-[0.25em] text-amber-700/70">Nuuko Wrapped</p>
-    <h2 class="mt-2 font-serif text-4xl font-semibold text-amber-900">Your Week with Nuuko</h2>
-    <p class="mt-2 text-sm text-amber-800/80">A gentle collage of words, moods, and tiny rituals.</p>
+    <p class="text-sm uppercase tracking-[0.25em] text-amber-700/70">nuuko wrapped · ${cadenceLabel}</p>
+    <h2 class="mt-2 font-serif text-4xl font-semibold text-amber-900">${headingText}</h2>
+    <p class="mt-2 text-sm text-amber-800/80">${rangeText}</p>
   `;
 
   const statGrid = document.createElement('div');
@@ -126,7 +322,7 @@ function createWordSummaryCard(stats) {
   const wordsAsTweets = Math.max(1, Math.round(stats.totalWords / 30));
   card.querySelector('.card-body').innerHTML = `
     <p class="font-serif text-2xl text-amber-900">${stats.totalWords.toLocaleString()} words this window.</p>
-    <p class="mt-2 text-sm text-amber-700/80">That’s like ${wordsAsPages} cozy pages or ~${wordsAsTweets} tweets.</p>
+    <p class="mt-2 text-sm text-amber-700/80">That's like ${wordsAsPages} cozy pages or ~${wordsAsTweets} tweets.</p>
   `;
   return card;
 }
@@ -216,7 +412,7 @@ function createQuotesCard(quotes) {
   const card = createCardShell('Favorite quotes', '📎');
   const body = card.querySelector('.card-body');
   if (!quotes.length) {
-    body.innerHTML = '<p class="text-sm text-amber-700/70">We’ll add highlights once you write a bit more.</p>';
+    body.innerHTML = '<p class="text-sm text-amber-700/70">We&apos;ll add highlights once you write a bit more.</p>';
     return card;
   }
   const list = document.createElement('div');

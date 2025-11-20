@@ -135,11 +135,18 @@
 
         <!-- Nuuko Wrapped Section -->
         <section id="wrappedSection" class="mt-16">
-            <div style="text-align:center; margin-bottom: 1.5rem;">
-                <p style="font-size: 0.85rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(61, 52, 44, 0.6); margin-bottom: 0.35rem;">nuuko wrapped</p>
-                <h2 style="font-size: 2rem; margin: 0; color: var(--nuuko-espresso); font-family: var(--font-serif);">your gentle collage</h2>
-                <p style="color: var(--nuuko-stone); max-width: 520px; margin: 0.75rem auto 0;">We&apos;ll prepare a cozy collage of your habits once some entries are ready.</p>
+            <div class="wrapped-header">
+                <div class="wrapped-heading">
+                    <p class="wrapped-kicker">nuuko wrapped</p>
+                    <h2 id="wrappedHeading">your gentle collage</h2>
+                    <p id="wrappedSubcopy">We&apos;ll prepare a cozy collage of your habits once some entries are ready.</p>
+                </div>
+                <div id="wrappedCadenceGroup" class="wrapped-cadence-group" role="group" aria-label="choose wrapped cadence">
+                    <button type="button" class="wrapped-cadence-btn" data-cadence="weekly">weekly</button>
+                    <button type="button" class="wrapped-cadence-btn" data-cadence="monthly">monthly</button>
+                </div>
             </div>
+            <p id="wrappedRangeLabel" class="wrapped-range-label hidden"></p>
             <div id="wrappedMount"></div>
         </section>
     </main>

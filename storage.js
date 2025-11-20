@@ -15,6 +15,7 @@
         userName: 'name',
         currentPrompt: 'what surprised you today?',
         summaryCadence: 'weekly',
+        wrappedCadence: 'weekly',
         prompts: [],
         lastSummaryRun: null,
         dataRetention: {
