@@ -30,6 +30,10 @@
                     <img src="assets/icons/icon-insights.svg" alt="insights" class="icon" style="width: 16px; height: 16px;">
                     <span>patterns</span>
                 </a>
+                <a href="feedback.html" class="nav-link">
+                    <img src="assets/icons/icon-feedback.svg" alt="feedback" class="icon" style="width: 16px; height: 16px;">
+                    <span>feedback</span>
+                </a>
             </div>
         </div>
     </nav>
@@ -73,11 +77,51 @@
             </div>
         </section>
 
+        <!-- AI Summary Card -->
+        <section id="summaryCard" class="card paper-texture mb-2xl slide-up" style="animation-delay: 0.2s; max-width: 800px; margin-left: auto; margin-right: auto;">
+            <div class="flex flex-col gap-lg">
+                <div class="flex items-start gap-md">
+                    <div style="width: 48px; height: 48px; background: rgba(107, 143, 113, 0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                        <img src="assets/icons/icon-insights.svg" alt="ai summary" style="width: 24px; height: 24px;">
+                    </div>
+                    <div style="flex: 1;">
+                        <div class="flex items-center justify-between gap-md">
+                            <div>
+                                <h2 style="font-size: 1.5rem; margin-bottom: 0.25rem;">ai reflections</h2>
+                                <p id="summaryDescription" class="text-muted" style="margin: 0;">nuuko quietly prepares summaries with your journaling-app key.</p>
+                            </div>
+                            <a href="insights.html#summarySettings" class="btn btn-ghost" style="white-space: nowrap;">
+                                <img src="assets/icons/icon-insights.svg" alt="settings" style="width: 16px; height: 16px;">
+                                <span>ai settings</span>
+                            </a>
+                        </div>
+                        <p id="summaryCadenceLabel" style="margin: 0.35rem 0 0; font-size: 0.9rem; color: var(--nuuko-espresso); text-transform: lowercase;">weekly cadence</p>
+                    </div>
+                </div>
+
+                <div class="card-minimal paper-texture" style="padding: 1rem; border: 1px dashed rgba(107, 143, 113, 0.35);">
+                    <div class="flex items-center justify-between gap-md">
+                        <div>
+                            <p id="summaryLastRun" style="margin: 0; font-size: 0.95rem; color: var(--nuuko-espresso);">no summaries yet</p>
+                            <p id="summaryEligibleCount" class="text-muted" style="margin: 0; font-size: 0.85rem;">ready when you are</p>
+                        </div>
+                <button id="summaryShareButton" class="btn btn-primary btn-lg" type="button" style="display: flex; align-items: center; gap: 0.35rem;">
+                    <img src="assets/icons/icon-insights.svg" alt="share" style="width: 16px; height: 16px;">
+                    <span id="summaryShareButtonText">share with gemini</span>
+                    <span id="summaryShareSpinner" class="spinner hidden"></span>
+                </button>
+                    </div>
+                    <p id="summaryStatusText" style="margin: 0.75rem 0 0; font-size: 0.85rem; color: var(--nuuko-stone);"></p>
+                    <p class="text-muted" style="margin: 0.4rem 0 0; font-size: 0.8rem;">cadence lives under patterns → ai summaries</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Your Library Section -->
         <section class="slide-up mb-2xl" style="animation-delay: 0.2s;">
             <div class="flex items-center justify-between mb-xl">
                 <h2 style="font-size: 2rem;">your library</h2>
-                <a href="#" class="btn btn-ghost">
+                <a href="#" class="btn btn-ghost" id="seeAllEntries">
                     <img src="assets/icons/icon-library.svg" alt="library" style="width: 16px; height: 16px;">
                     <span>see all</span>
                 </a>
@@ -121,22 +165,32 @@
 
         <!-- Calendar Section -->
         <section class="card paper-texture mb-xl slide-up" style="animation-delay: 0.4s;">
-            <div class="flex items-center justify-between mb-xl">
-                <h3 id="currentMonth" style="font-size: 1.5rem;">august</h3>
-                <span class="text-muted" style="font-size: 1rem;">2025</span>
+            <div class="flex items-center justify-between mb-md" style="flex-wrap: wrap; gap: 0.5rem;">
+                <div class="flex items-center gap-sm">
+                    <button id="calendarPrev" class="btn btn-ghost" type="button" aria-label="previous month">‹</button>
+                    <h3 id="currentMonth" style="font-size: 1.25rem; margin: 0;">august</h3>
+                    <span id="currentYearLabel" class="text-muted" style="font-size: 1rem;">2025</span>
+                    <button id="calendarNext" class="btn btn-ghost" type="button" aria-label="next month">›</button>
+                </div>
+                <div class="flex items-center gap-sm">
+                    <button id="calendarToday" class="btn btn-ghost text-sm" type="button">today</button>
+                    <button id="calendarYearView" class="btn btn-ghost text-sm" type="button">year view</button>
+                </div>
             </div>
 
-            <div id="calendar" class="calendar" style="gap: 0.5rem; margin-bottom: 1.5rem;">
-                <!-- Day headers -->
-                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">s</div>
-                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">m</div>
-                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">t</div>
-                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">w</div>
-                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">t</div>
-                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">f</div>
-                <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">s</div>
-                
-                <!-- Calendar days will be generated by JavaScript -->
+            <div class="calendar-shell">
+                <div id="calendar" class="calendar calendar--compact" style="margin-bottom: 1rem;">
+                    <!-- Day headers -->
+                    <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">s</div>
+                    <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">m</div>
+                    <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">t</div>
+                    <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">w</div>
+                    <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">t</div>
+                    <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">f</div>
+                    <div class="text-center text-sm" style="color: var(--nuuko-stone); padding: 0.5rem 0; font-weight: 600;">s</div>
+                    
+                    <!-- Calendar days will be generated by JavaScript -->
+                </div>
             </div>
 
             <div class="flex items-center gap-sm text-sm text-muted">
@@ -144,7 +198,38 @@
                 <span>days with notes</span>
             </div>
         </section>
+
+        <section id="feedback" class="card paper-texture mb-xl slide-up" style="animation-delay: 0.5s; max-width: 800px; margin-left: auto; margin-right: auto;">
+            <div class="flex flex-col gap-md" style="align-items: flex-start;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <div style="width: 48px; height: 48px; background: rgba(154, 107, 81, 0.18); border-radius: 12px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px);">
+                        <img src="assets/icons/icon-feedback.svg" alt="feedback" style="width: 24px; height: 24px;">
+                    </div>
+                    <div>
+                        <h2 class="mb-xs">feedback keeps nuuko cozy</h2>
+                        <p class="text-muted" style="margin: 0;">Noticed a bug or have a gentle nudge? Leave us a note and we&apos;ll polish your nook.</p>
+                    </div>
+                </div>
+                <a href="feedback.html" class="btn btn-primary btn-lg">
+                    <img src="assets/icons/icon-feedback.svg" alt="feedback" style="width: 16px; height: 16px;">
+                    <span>send feedback</span>
+                </a>
+            </div>
+        </section>
     </main>
+
+    <!-- Library Modal -->
+    <div id="libraryModal" class="modal hidden" aria-hidden="true">
+        <div class="modal-content modal-content--wide" role="dialog" aria-modal="true" aria-labelledby="libraryModalTitle" tabindex="-1">
+            <div class="modal-header library-modal-header">
+                <h2 id="libraryModalTitle">your whole library</h2>
+                <button id="closeLibraryModal" class="close-btn" aria-label="close library view">&times;</button>
+            </div>
+            <div class="modal-body library-modal-body">
+                <div id="libraryModalContent"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Entry Modal -->
     <div id="entryModal" class="modal hidden">
@@ -156,9 +241,54 @@
             <div class="modal-body">
                 <div id="modalMood" class="modal-mood"></div>
                 <div id="modalContent" class="modal-text"></div>
+                <div id="modalTags" class="modal-tags"></div>
                 <div id="modalStats" class="modal-stats"></div>
             </div>
+            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+                <button id="modalEditButton" class="btn btn-primary" style="display: flex; align-items: center; gap: 0.35rem;">
+                    <img src="assets/icons/icon-journal.svg" alt="edit" style="width: 14px; height: 14px;">
+                    <span>edit page</span>
+                </button>
+                <button id="modalDeleteButton" class="btn btn-ghost" style="display: flex; align-items: center; gap: 0.35rem; color: var(--mood-anxious);">
+                    <img src="assets/icons/streak-icon.svg" alt="delete" style="width: 14px; height: 14px;">
+                    <span>delete</span>
+                </button>
+            </div>
         </div>
+    </div>
+
+    <!-- Summary Consent Modal -->
+    <div id="summaryConsentModal" class="modal hidden">
+        <div class="modal-content modal-content--wide">
+            <div class="modal-header">
+                <h2>share these entries?</h2>
+                <button id="closeSummaryConsentModal" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <p id="summaryConsentRange" class="text-muted" style="margin-bottom: 1rem;"></p>
+                <div id="summaryConsentList" class="flex flex-col gap-md"></div>
+                <div class="card-minimal paper-texture" style="margin-top: 1rem;">
+                    <p id="summaryConsentCount" style="margin: 0;"></p>
+                    <p id="summaryConsentWordCount" class="text-muted" style="margin: 0;"></p>
+                </div>
+                <div class="card-minimal paper-texture" style="margin-top: 1rem;">
+                    <p style="margin: 0; font-size: 0.85rem; color: var(--nuuko-stone);">
+                        we'll send only this text to the Gemini API. nothing is stored on servers.
+                    </p>
+                </div>
+                <div class="summary-consent-actions">
+                    <button id="summaryConsentCancel" class="btn btn-ghost" type="button">cancel</button>
+                    <button id="summaryConsentConfirm" class="btn btn-primary" type="button">
+                        <img src="assets/icons/icon-insights.svg" alt="confirm" style="width: 16px; height: 16px;">
+                        <span>share with gemini</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="summaryToast" class="hidden" style="position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: rgba(61, 52, 44, 0.95); color: #fff; padding: 0.85rem 1.5rem; border-radius: 999px; font-size: 0.9rem; z-index: 2000; box-shadow: 0 12px 24px rgba(0,0,0,0.15); transition: opacity 0.3s ease;">
+        <span id="summaryToastText">your reflections are ready</span>
     </div>
 
     <!-- Footer -->
@@ -175,6 +305,8 @@
     </footer>
 
     <!-- JavaScript -->
+    <script src="storage.js"></script>
+    <script src="summary.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

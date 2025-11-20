@@ -1,0 +1,86 @@
+{
+  "weekday_morning_mon_thu": [
+    "This morning, what is one thing I want to feel by tonight, and what is one small action that would make that feeling more likely?",
+    "If one thing derails my focus today, it will probably be ___. If that happens, then I will respond by ___.",
+    "What is one strength I want to practice using today on purpose?",
+    "What is one thing I am quietly looking forward to today, and how can I savor it more?",
+    "What would a \"good enough\" day look like today, realistically?"
+  ],
+  "friday_morning": [
+    "Looking back at this week so far, what am I most proud of, and how can I carry that energy into today?",
+    "If I start to mentally check out today, then I will gently bring myself back by ___?",
+    "What is one unfinished task I can close today to gift my future self a lighter Monday?",
+    "How do I want to feel going into the weekend, and what is one boundary I can set today to protect that feeling?",
+    "What is one small way I can celebrate surviving this week?"
+  ],
+  "weekend_morning": [
+    "What kind of weekend do I need more right now: restorative, adventurous, or productive? Why?",
+    "If I catch myself mindlessly scrolling today, then I will switch to ___ instead.",
+    "What is one tiny thing I could do today that my body will thank me for?",
+    "Who is one person I would genuinely enjoy connecting with this weekend, and how could I reach out?",
+    "What would make this weekend feel meaningful rather than just \"filled\"?"
+  ],
+  "midday_checkin": [
+    "Compared to this morning, what has shifted in my energy, and what might be the reason?",
+    "If the rest of today goes exactly like the last 3 hours, how will I feel tonight? What is one small tweak I want to make?",
+    "What is one thing I can let go of or deprioritize this afternoon without the world falling apart?",
+    "What is one thing that has gone better than expected so far today?",
+    "If I hit a wall in the next few hours, then my reset routine will be ___, ___, and ___."
+  ],
+  "weekday_evening_mon_thu": [
+    "What moment from today do I want to remember a week from now, and why?",
+    "Where did I act in alignment with my values today, even in a tiny way?",
+    "Where did I feel out of alignment today, and how can I gently course correct tomorrow?",
+    "If I could replay one uncomfortable moment from today, what would I do differently, and what can I learn instead of just cringing?",
+    "What is one thing I can thank my past self for doing that helped me today?"
+  ],
+  "friday_evening": [
+    "What were three real wins from this week, no matter how small?",
+    "What was the hardest moment of this week, and what does it reveal about what I care about?",
+    "If next week repeated this week exactly, what would I be happy about, and what would I want to change?",
+    "How can I symbolically close this week tonight, so that my brain understands it is allowed to rest?",
+    "What am I quietly grateful for right now that I rarely acknowledge?"
+  ],
+  "saturday_evening": [
+    "What actually felt nourishing about today, and what just kept me busy?",
+    "If tomorrow were completely unscheduled, what would I naturally drift toward doing, and what does that say about my current needs?",
+    "Did anything today surprise me in a good way? What does that surprise tell me about what I have been expecting lately?",
+    "What is one thing I regret about today, and how can I turn that regret into a specific do differently tomorrow?",
+    "What feeling am I ending today with, and what might that feeling be trying to tell me?"
+  ],
+  "sunday_evening_reset": [
+    "What do I need from the upcoming week emotionally, not just in terms of tasks?",
+    "What am I carrying into this new week that I would like to set down, even mentally, for now?",
+    "What are my top three non negotiables for this week, and why do they actually matter to me?",
+    "If this week turns out to be stressful, what is my if then plan to protect my wellbeing?",
+    "In seven days, what would I love to be able to write here about how this week went?"
+  ],
+  "month_beginning": [
+    "Looking back at last month, what patterns do I notice in my mood or energy?",
+    "What is one story about myself from last month that I want to keep, and one I want to rewrite?",
+    "What is a realistic theme or word for this month, and what would it look like in my daily life?",
+    "If this month gets chaotic, what habit do I want to protect at all costs?",
+    "A month from now, what small progress would make me genuinely proud, even if nobody else sees it?"
+  ],
+  "month_end": [
+    "What were three peaks and three valleys from this month, and what did each teach me?",
+    "Which choices this month moved me closer to the person I want to become?",
+    "What is one situation I handled better this month than I would have a year ago?",
+    "What am I grieving or disappointed about from this month, and how can I validate that without letting it define me?",
+    "What am I most grateful to past me for, across this month?"
+  ],
+  "season_spring": [
+    "Where do I notice signs of \"newness\" or change in my life right now, even if they are tiny?",
+    "If I treated this season as a fresh start, what is one outdated belief I would like to gently retire?",
+    "What small risk or experiment feels exciting in this season of my life?",
+    "How can I invite a little more play or curiosity into the next few weeks?",
+    "What inner part of me feels ready to grow, even if the rest of me feels hesitant?"
+  ],
+  "season_summer": [
+    "Where in my life do I feel most alive and energized right now, and how can I lean 10 percent more into that?",
+    "If I gave myself permission to enjoy something without earning it first, what would I do this week?",
+    "What boundaries around time, rest, or social media would let this season feel more spacious?",
+    "What is one moment of joy or beauty from recently that I want to replay in detail?",
+    "When I imagine looking back on this season years from now, what do I hope I will remember about myself?"
+  ]
+}

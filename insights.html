@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪶</text></svg>">
     <meta name="description" content="Gentle insights into your reflection journey">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -29,6 +30,10 @@
                 <a href="insights.html" class="nav-link active">
                     <img src="assets/icons/icon-insights.svg" alt="insights" class="icon" style="width: 16px; height: 16px;">
                     <span>patterns</span>
+                </a>
+                <a href="feedback.html" class="nav-link">
+                    <img src="assets/icons/icon-feedback.svg" alt="feedback" class="icon" style="width: 16px; height: 16px;">
+                    <span>feedback</span>
                 </a>
             </div>
         </div>
@@ -75,8 +80,8 @@
                     <!-- Day Streak -->
                     <div class="card text-center paper-texture" style="padding: 2rem;">
                         <div style="font-size: 3rem; font-weight: 700; color: var(--nuuko-green); margin-bottom: 0.5rem;" id="currentStreak">1</div>
-                        <div style="font-size: 1rem; color: var(--nuuko-stone); margin-bottom: 0.5rem;">day streak</div>
-                        <div style="font-size: 0.875rem; color: var(--nuuko-stone); font-style: italic;">keep the momentum going</div>
+                        <div style="font-size: 1rem; color: var(--nuuko-stone); margin-bottom: 0.25rem;">current day streak</div>
+                        <div style="font-size: 0.875rem; color: var(--nuuko-stone);" id="longestStreak">longest streak: 1 day</div>
                     </div>
 
                     <!-- Words per Page -->
@@ -94,177 +99,1004 @@
                     </div>
                 </div>
 
-                <!-- Mood Streak Visualization -->
-                <section class="slide-up mb-xl" style="animation-delay: 0.2s;">
-                    <div class="card paper-texture">
-                        <h3 class="mb-xl" style="font-size: 1.25rem;">mood streak</h3>
-                        <div id="moodVisualization" style="height: 120px; background: linear-gradient(90deg, rgba(214, 126, 126, 0.2) 0%, rgba(107, 143, 113, 0.2) 50%, rgba(154, 107, 81, 0.2) 100%); border-radius: 12px; position: relative; display: flex; align-items: center; justify-content: center;">
-                            <div style="color: var(--nuuko-stone); font-style: italic;">write more entries to see your mood patterns</div>
+                <div class="grid mb-xl slide-up" style="animation-delay: 0.2s; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
+                    <!-- Mood Distribution -->
+                    <section class="card paper-texture">
+                        <div class="flex items-center justify-between mb-md">
+                            <h3 style="margin: 0; font-size: 1.25rem;">moods you felt</h3>
+                            <span id="moodDominantLabel" style="font-size: 0.85rem; color: var(--nuuko-green);"></span>
                         </div>
+                        <div id="moodDistributionEmpty" class="text-center text-muted hidden" style="padding: 1rem 0;">log a mood to see gentle trends</div>
+                        <div id="moodDistributionList" class="flex flex-col gap-sm"></div>
+                    </section>
+
+                    <!-- Prompt Usage -->
+                    <section class="card paper-texture">
+                        <div class="flex items-center justify-between mb-md">
+                            <h3 style="margin: 0; font-size: 1.25rem;">prompts that stuck</h3>
+                            <span id="promptCountLabel" style="font-size: 0.85rem; color: var(--nuuko-clay);"></span>
+                        </div>
+                        <div id="promptUsageEmpty" class="text-center text-muted hidden" style="padding: 1rem 0;">your custom prompts will appear here</div>
+                        <div id="promptUsageList" class="flex flex-col gap-sm"></div>
+                    </section>
+                </div>
+                <!-- Recent Pages -->
+                <section class="card paper-texture mb-xl slide-up" style="animation-delay: 0.3s;">
+                    <div class="flex items-center justify-between mb-lg">
+                        <h3 style="font-size: 1.25rem; margin: 0;">recent pages</h3>
+                        <span id="recentPagesLabel" style="font-size: 0.875rem; color: var(--nuuko-stone);">last 3 entries</span>
                     </div>
+                    <div id="recentPagesList"></div>
                 </section>
 
-                <!-- Recent Pages Book -->
-                <section id="recentPagesSection" class="slide-up" style="animation-delay: 0.3s;">
-                    <div class="flex items-center justify-between mb-xl">
-                        <h2 style="font-size: 1.5rem;">recent pages</h2>
-                        <a href="index.html" class="btn btn-ghost">
-                            <img src="assets/icons/icon-library.svg" alt="home" style="width: 16px; height: 16px;">
-                            <span>home</span>
-                        </a>
-                    </div>
-                    
-                    <!-- Book-style Layout -->
-                    <div class="card paper-texture" style="background: linear-gradient(135deg, rgba(154, 107, 81, 0.1) 0%, rgba(243, 239, 229, 0.8) 100%); border: 2px solid rgba(154, 107, 81, 0.2); border-radius: 20px; position: relative; overflow: hidden;">
-                        <!-- Book spine effect -->
-                        <div style="position: absolute; left: 0; top: 0; bottom: 0; width: 20px; background: linear-gradient(180deg, rgba(154, 107, 81, 0.3) 0%, rgba(154, 107, 81, 0.2) 100%); border-right: 2px solid rgba(154, 107, 81, 0.3);"></div>
-                        
-                        <!-- Book content -->
-                        <div style="padding: 2rem 2rem 2rem 3rem; position: relative; z-index: 1;">
-                            <div id="recentPagesList">
-                                <!-- Recent pages will be populated here -->
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                <div id="insightsTimestamp" class="text-center text-sm text-muted" style="opacity: 0.8;"></div>
             </div>
         </div>
+
+        <!-- Nuuko Wrapped Section -->
+        <section id="wrappedSection" class="mt-16">
+            <div style="text-align:center; margin-bottom: 1.5rem;">
+                <p style="font-size: 0.85rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(61, 52, 44, 0.6); margin-bottom: 0.35rem;">nuuko wrapped</p>
+                <h2 style="font-size: 2rem; margin: 0; color: var(--nuuko-espresso); font-family: var(--font-serif);">your gentle collage</h2>
+                <p style="color: var(--nuuko-stone); max-width: 520px; margin: 0.75rem auto 0;">We&apos;ll prepare a cozy collage of your habits once some entries are ready.</p>
+            </div>
+            <div id="wrappedMount"></div>
+        </section>
     </main>
 
+    <!-- Summary Detail Modal -->
+    <div id="summaryDetailModal" class="modal hidden">
+        <div class="modal-content modal-content--wide">
+            <div class="modal-header">
+                <h2 id="summaryModalTitle">ai summary</h2>
+                <button id="closeSummaryDetailModal" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <p id="summaryModalRange" class="text-muted"></p>
+                <div id="summaryModalHighlights" class="flex flex-col gap-sm" style="margin-bottom: 1rem;"></div>
+                <pre id="summaryModalText" style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6; color: var(--nuuko-espresso);"></pre>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                <button id="summaryModalDelete" class="btn btn-ghost" type="button" style="color: var(--mood-anxious);">
+                    <span>delete</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="summaryToast" class="hidden" style="position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: rgba(61, 52, 44, 0.95); color: #fff; padding: 0.85rem 1.5rem; border-radius: 999px; font-size: 0.9rem; z-index: 2000; box-shadow: 0 12px 24px rgba(0,0,0,0.15); transition: opacity 0.3s ease;">
+        <span id="summaryToastText">your reflections are ready</span>
+    </div>
+
     <!-- JavaScript -->
+    <script src="storage.js"></script>
+    <script src="summary.js"></script>
     <script>
-        // Load and display insights
-        function loadInsights() {
-            const entries = JSON.parse(localStorage.getItem('nuuko_entries') || '[]');
-            const stats = JSON.parse(localStorage.getItem('nuuko_stats') || '{}');
-            
+        const storageReady = window.NuukoStorage?.ready
+            ? NuukoStorage.ready.catch((error) => {
+                console.warn('[Nuuko] storage init issue on insights page:', error);
+            })
+            : Promise.resolve();
+        let latestSummariesCache = [];
+        let currentSummaryDetail = null;
+        const DAY_MS = 24 * 60 * 60 * 1000;
+        const RECENT_ENTRY_LIMIT = 4;
+        const SUMMARY_WINDOW_DAYS = {
+            weekly: 7,
+            monthly: 30,
+            yearly: 365
+        };
+
+        async function loadInsights(options = {}) {
+            await storageReady;
+            const entries = getEntries();
+            const settings = getSettings();
+            latestSummariesCache = getSummaries();
+
+            const storedHighlight = localStorage.getItem('nuuko_last_summary_highlight');
+            const highlightId = options.highlightSummaryId || storedHighlight || null;
+
             if (entries.length === 0) {
-                // Show empty state
-                document.getElementById('emptyState').classList.remove('hidden');
-                document.getElementById('statsGrid').classList.add('hidden');
+                showEmptyState();
+                renderSummaryHistory(latestSummariesCache, highlightId);
+                updateSummaryScheduleMeta(settings, latestSummariesCache);
+                setTimestamp(null);
+                if (storedHighlight && !options.highlightSummaryId) {
+                    localStorage.removeItem('nuuko_last_summary_highlight');
+                }
                 return;
             }
-            
-            // Hide empty state, show stats
-            document.getElementById('emptyState').classList.add('hidden');
-            document.getElementById('statsGrid').classList.remove('hidden');
-            
-            // Calculate insights
+
+            hideEmptyState();
+
+            const signature = buildEntriesSignature(entries);
+            let cachedRecord = null;
+
+            if (!options.force && window.NuukoStorage?.getLatestInsightsCache) {
+                const latestCache = NuukoStorage.getLatestInsightsCache();
+                if (latestCache?.data?.signature === signature) {
+                    cachedRecord = latestCache;
+                }
+            }
+
+            const insightsData = cachedRecord
+                ? cachedRecord.data
+                : computeInsights(entries, signature);
+
+            renderInsights(insightsData);
+            renderSummaryHistory(latestSummariesCache, highlightId);
+            updateSummaryScheduleMeta(settings, latestSummariesCache);
+            if (highlightId && highlightId === storedHighlight && !options.highlightSummaryId) {
+                localStorage.removeItem('nuuko_last_summary_highlight');
+                localStorage.removeItem('nuuko_last_summary_label');
+            }
+            setTimestamp(cachedRecord?.computedAt || insightsData.computedAt, Boolean(cachedRecord));
+
+            if (highlightId && highlightId === storedHighlight && !options.highlightSummaryId) {
+                localStorage.removeItem('nuuko_last_summary_highlight');
+            }
+
+            if (!cachedRecord && window.NuukoStorage?.saveInsightsCache) {
+                try {
+                    await NuukoStorage.saveInsightsCache({
+                        id: 'latest',
+                        computedAt: insightsData.computedAt,
+                        data: insightsData
+                    });
+                } catch (error) {
+                    console.warn('[Nuuko] failed to cache insights:', error);
+                }
+            }
+        }
+
+        function getEntries() {
+            const stored = window.NuukoStorage
+                ? NuukoStorage.getEntriesSnapshot()
+                : JSON.parse(localStorage.getItem('nuuko_entries') || '[]');
+            return Array.isArray(stored) ? stored.slice() : [];
+        }
+
+        function getSettings() {
+            if (window.NuukoStorage) {
+                return NuukoStorage.getSettingsSnapshot();
+            }
+            const lastRun = localStorage.getItem('nuuko_last_summary_run');
+            return {
+                summaryCadence: 'weekly',
+                lastSummaryRun: lastRun || null
+            };
+        }
+
+        function getSummaries() {
+            if (window.NuukoStorage) {
+                return NuukoStorage.getSummariesSnapshot();
+            }
+            const legacy = JSON.parse(localStorage.getItem('nuuko_summaries') || '[]');
+            return Array.isArray(legacy) ? legacy : [];
+        }
+
+        function computeInsights(entries, signature) {
             const totalEntries = entries.length;
             const totalWords = entries.reduce((sum, entry) => sum + (entry.wordCount || 0), 0);
             const averageWords = totalEntries > 0 ? Math.round(totalWords / totalEntries) : 0;
-            
-            // Calculate streak (simplified - days since first entry)
-            const firstEntry = entries[entries.length - 1]; // entries are stored newest first
-            const daysSinceFirst = firstEntry ? Math.floor((Date.now() - new Date(firstEntry.createdAt).getTime()) / (1000 * 60 * 60 * 24)) + 1 : 0;
-            
-            // Update displays
-            document.getElementById('totalEntries').textContent = totalEntries.toLocaleString();
-            document.getElementById('currentStreak').textContent = Math.min(daysSinceFirst, totalEntries); // Simplified streak
-            document.getElementById('averageWords').textContent = averageWords.toLocaleString();
-            document.getElementById('totalWords').textContent = totalWords.toLocaleString();
-            
-            // Add encouraging subtexts
-            const pagesSubtext = document.getElementById('pagesSubtext');
-            if (totalEntries === 1) {
-                pagesSubtext.textContent = 'just getting started';
-            } else if (totalEntries < 10) {
-                pagesSubtext.textContent = 'building a habit';
-            } else if (totalEntries < 30) {
-                pagesSubtext.textContent = 'finding your rhythm';
-            } else {
-                pagesSubtext.textContent = 'a beautiful collection';
-            }
-            
-            const wordsNote = document.getElementById('totalWordsNote');
-            if (totalWords > 10000) {
-                wordsNote.textContent = 'basically, a short novel';
-            } else if (totalWords > 5000) {
-                wordsNote.textContent = 'like a long short story';
-            } else if (totalWords > 1000) {
-                wordsNote.textContent = 'quite a collection';
-            } else {
-                wordsNote.textContent = 'just getting started';
-            }
-            
-            // Populate recent pages
-            populateRecentPages(entries.slice(0, 3)); // Show fewer for book layout
+
+            const dayKeys = Array.from(new Set(entries
+                .map(entry => entry.createdAt)
+                .filter(Boolean)
+                .map((iso) => formatDayKey(iso))
+            )).sort();
+            const streaks = calculateStreaks(dayKeys);
+
+            const moodDistribution = buildMoodDistribution(entries);
+            const promptUsage = buildPromptUsage(entries);
+            const recentEntries = entries.slice(0, RECENT_ENTRY_LIMIT);
+
+            return {
+                signature,
+                computedAt: new Date().toISOString(),
+                totals: {
+                    entries: totalEntries,
+                    words: totalWords,
+                    averageWords,
+                    pagesLabel: getPagesSubtext(totalEntries),
+                    wordsLabel: getWordsNote(totalWords)
+                },
+                streaks,
+                mood: {
+                    distribution: moodDistribution,
+                    dominantMood: moodDistribution.length > 0 ? moodDistribution[0].mood : ''
+                },
+                prompts: {
+                    usage: promptUsage,
+                    count: promptUsage.length
+                },
+                recentEntries
+            };
         }
-        
-        function populateRecentPages(recentEntries) {
-            const container = document.getElementById('recentPagesList');
-            
-            if (recentEntries.length === 0) {
-                container.innerHTML = '<p class="text-muted text-center" style="padding: 2rem;">no recent pages</p>';
+
+        function buildEntriesSignature(entries) {
+            if (!entries.length) return 'empty';
+            return entries
+                .map(entry => `${entry.id}:${entry.updatedAt || entry.createdAt || ''}`)
+                .join('|');
+        }
+
+        function calculateStreaks(dayKeys = []) {
+            if (dayKeys.length === 0) return { current: 0, longest: 0 };
+            const numericDays = dayKeys
+                .map(key => new Date(key).setHours(0, 0, 0, 0))
+                .sort((a, b) => a - b);
+
+            let longest = 1;
+            let run = 1;
+            for (let i = 1; i < numericDays.length; i++) {
+                if ((numericDays[i] - numericDays[i - 1]) === DAY_MS) {
+                    run += 1;
+                } else {
+                    run = 1;
+                }
+                longest = Math.max(longest, run);
+            }
+
+            const startOfToday = startOfDay(Date.now());
+            const latest = numericDays[numericDays.length - 1];
+            const diffFromToday = Math.floor((startOfToday - latest) / DAY_MS);
+            let current = 0;
+            if (diffFromToday === 0 || diffFromToday === 1) {
+                current = 1;
+                for (let i = numericDays.length - 1; i > 0; i--) {
+                    if ((numericDays[i] - numericDays[i - 1]) === DAY_MS) {
+                        current += 1;
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            return {
+                current,
+                longest: Math.max(longest, current)
+            };
+        }
+
+        function buildMoodDistribution(entries) {
+            const counts = entries.reduce((map, entry) => {
+                if (!entry.mood) return map;
+                const key = entry.mood.toLowerCase();
+                map.set(key, (map.get(key) || 0) + 1);
+                return map;
+            }, new Map());
+
+            const total = Array.from(counts.values()).reduce((sum, value) => sum + value, 0);
+            return Array.from(counts.entries())
+                .map(([mood, count]) => ({
+                    mood,
+                    count,
+                    percentage: total ? Math.round((count / total) * 100) : 0
+                }))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 4);
+        }
+
+        function buildPromptUsage(entries) {
+            const counts = entries.reduce((map, entry) => {
+                const promptText = (entry.prompt || entry.promptId || '').trim();
+                if (!promptText) return map;
+                map.set(promptText, (map.get(promptText) || 0) + 1);
+                return map;
+            }, new Map());
+
+            const total = Array.from(counts.values()).reduce((sum, value) => sum + value, 0);
+            return Array.from(counts.entries())
+                .map(([prompt, count]) => ({
+                    prompt,
+                    count,
+                    percentage: total ? Math.round((count / total) * 100) : 0
+                }))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 4);
+        }
+
+        function renderInsights(data) {
+            document.getElementById('totalEntries').textContent = data.totals.entries.toLocaleString();
+            document.getElementById('pagesSubtext').textContent = data.totals.pagesLabel;
+            document.getElementById('averageWords').textContent = data.totals.averageWords.toLocaleString();
+            document.getElementById('totalWords').textContent = data.totals.words.toLocaleString();
+            document.getElementById('totalWordsNote').textContent = data.totals.wordsLabel;
+            document.getElementById('currentStreak').textContent = data.streaks.current.toString();
+            document.getElementById('longestStreak').textContent = `longest streak: ${data.streaks.longest} ${data.streaks.longest === 1 ? 'day' : 'days'}`;
+
+            renderMoodDistribution(data.mood);
+            renderPromptUsage(data.prompts);
+            renderRecentPages(data.recentEntries);
+        }
+
+        function updateSummaryScheduleMeta(settings = {}, summaries = []) {
+            const cadence = settings.summaryCadence || 'weekly';
+            const nextEl = document.getElementById('summaryNextRun');
+            const lastEl = document.getElementById('summaryLastCompleted');
+            if (!nextEl || !lastEl) return;
+
+            const latestSummary = summaries?.[0] || null;
+            const lastRunISO = settings.lastSummaryRun || latestSummary?.createdAt || null;
+            lastEl.textContent = lastRunISO
+                ? formatScheduleDate(lastRunISO)
+                : 'not yet';
+
+            const nextInfo = computeNextRunInfo(cadence, lastRunISO);
+            nextEl.textContent = nextInfo.text;
+            nextEl.classList.toggle('summary-schedule-overdue', nextInfo.overdue);
+        }
+
+        function computeNextRunInfo(cadence, lastRunISO) {
+            if (!cadence || cadence === 'manual') {
+                return { text: 'manual — tap generate', overdue: false };
+            }
+            const windowDays = SUMMARY_WINDOW_DAYS[cadence] || SUMMARY_WINDOW_DAYS.weekly;
+            const referenceDate = lastRunISO ? new Date(lastRunISO) : null;
+            const baseDate = referenceDate && !Number.isNaN(referenceDate.getTime()) ? referenceDate : new Date();
+            const nextDate = new Date(baseDate.getTime() + windowDays * DAY_MS);
+            const now = Date.now();
+
+            if (!lastRunISO) {
+                return {
+                    text: `first run ${formatScheduleDate(nextDate)}`,
+                    overdue: false
+                };
+            }
+
+            if (nextDate.getTime() <= now) {
+                return {
+                    text: `ready now · was due ${formatScheduleDate(nextDate)}`,
+                    overdue: true
+                };
+            }
+
+            return {
+                text: formatScheduleDate(nextDate),
+                overdue: false
+            };
+        }
+
+        function formatScheduleDate(value) {
+            const date = value instanceof Date ? value : new Date(value);
+            if (Number.isNaN(date.getTime())) return 'soon';
+            return date.toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit'
+            }).toLowerCase();
+        }
+
+        function extractPrimaryValue(card = {}) {
+            const candidates = [
+                card.data?.value,
+                card.data?.count,
+                card.data?.days,
+                card.data?.words,
+                card.data?.streak,
+                card.data?.percentage,
+                card.value
+            ];
+            const found = candidates.find((value) => value !== undefined && value !== null && value !== '');
+            if (typeof found === 'number') {
+                return Number.isInteger(found) ? found.toLocaleString() : found.toFixed(1);
+            }
+            return found ? String(found) : '';
+        }
+
+        function extractPrimaryLabel(card = {}) {
+            const candidates = [
+                card.data?.label,
+                card.data?.context,
+                card.data?.comparison,
+                card.data?.note,
+                card.valueLabel
+            ];
+            const found = candidates.find((value) => value !== undefined && value !== null && value !== '');
+            return found ? String(found) : '';
+        }
+
+        function getWrappedListItems(card = {}) {
+            const data = card.data || {};
+            const candidateKeys = ['list', 'metrics', 'distribution', 'items', 'phrases', 'topics', 'segments', 'chart'];
+            for (const key of candidateKeys) {
+                if (Array.isArray(data[key]) && data[key].length) {
+                    return data[key];
+                }
+            }
+            if (Array.isArray(card.list) && card.list.length) {
+                return card.list;
+            }
+            return [];
+        }
+
+        function formatWrappedValue(value) {
+            if (value === null || typeof value === 'undefined' || value === '') return '';
+            if (typeof value === 'number') {
+                return Number.isInteger(value) ? value.toLocaleString() : value.toFixed(1);
+            }
+            return String(value);
+        }
+
+        function extractProgressValue(item = {}, fallbackValue) {
+            if (typeof item.percentage === 'number') return Math.max(0, Math.min(100, item.percentage));
+            if (typeof item.percent === 'number') return Math.max(0, Math.min(100, item.percent));
+            if (typeof fallbackValue === 'number' && fallbackValue <= 1) {
+                return Math.round(fallbackValue * 100);
+            }
+            if (typeof fallbackValue === 'string' && fallbackValue.trim().endsWith('%')) {
+                const numeric = parseFloat(fallbackValue);
+                if (!Number.isNaN(numeric)) {
+                    return Math.max(0, Math.min(100, numeric));
+                }
+            }
+            return null;
+        }
+
+        function getWordChips(card = {}) {
+            const data = card.data || {};
+            const candidates = ['words', 'keywords', 'topics', 'phrases'];
+            for (const key of candidates) {
+                if (Array.isArray(data[key]) && data[key].length) {
+                    return data[key];
+                }
+            }
+            return [];
+        }
+
+        function formatWordChip(item) {
+            if (item && typeof item === 'object' && !Array.isArray(item)) {
+                return item.word || item.label || item.topic || item.name || '';
+            }
+            return String(item);
+        }
+
+        function getQuoteList(card = {}) {
+            const data = card.data || {};
+            const candidates = ['quotes', 'highlights', 'lines'];
+            for (const key of candidates) {
+                if (Array.isArray(data[key]) && data[key].length) {
+                    return data[key];
+                }
+            }
+            return [];
+        }
+
+        function inferWrappedIcon(type) {
+            switch (type) {
+                case 'activity':
+                    return '📔';
+                case 'volume':
+                    return '📝';
+                case 'expression':
+                    return '💬';
+                case 'mood':
+                    return '🌗';
+                case 'top_words':
+                case 'words':
+                    return '🔤';
+                case 'timing':
+                    return '⏰';
+                case 'quotes':
+                    return '✨';
+                case 'avoidance':
+                    return '🌱';
+                default:
+                    return '🪶';
+            }
+        }
+
+        function toTitleCase(value = '') {
+            return value.replace(/_/g, ' ').replace(/\w\S*/g, (word) => word.charAt(0).toUpperCase() + word.slice(1));
+        }
+
+        function renderMoodDistribution(moodData) {
+            const listEl = document.getElementById('moodDistributionList');
+            const emptyEl = document.getElementById('moodDistributionEmpty');
+            const labelEl = document.getElementById('moodDominantLabel');
+
+            if (!moodData.distribution.length) {
+                listEl.innerHTML = '';
+                emptyEl.classList.remove('hidden');
+                labelEl.textContent = '';
                 return;
             }
-            
-            // Create book-style layout with left and right pages
-            const halfPoint = Math.ceil(recentEntries.length / 2);
-            const leftPages = recentEntries.slice(0, halfPoint);
-            const rightPages = recentEntries.slice(halfPoint);
-            
-            container.innerHTML = `
-                <div style="display: grid; grid-template-columns: 1fr 2px 1fr; gap: 2rem; min-height: 200px;">
-                    <!-- Left Pages -->
-                    <div style="border-right: none;">
-                        ${leftPages.map((entry, index) => {
-                            const date = new Date(entry.createdAt).toLocaleDateString('en-US', {
-                                month: 'short',
-                                day: 'numeric'
-                            });
-                            
-                            const preview = entry.content.length > 80 
-                                ? entry.content.substring(0, 80) + '...'
-                                : entry.content;
-                            
-                            return `
-                                <div style="margin-bottom: ${index < leftPages.length - 1 ? '1.5rem' : '0'};">
-                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-                                        <h4 style="font-size: 1rem; font-weight: 600; color: var(--nuuko-espresso); margin: 0;">${date}</h4>
-                                        <div style="background: rgba(154, 107, 81, 0.6); color: white; padding: 0.25rem 0.5rem; border-radius: 8px; font-size: 0.75rem; font-weight: 500;">word</div>
-                                    </div>
-                                    <p style="font-size: 0.875rem; color: var(--nuuko-stone); line-height: 1.6; margin: 0;">${preview}</p>
-                                </div>
-                            `;
-                        }).join('')}
+
+            emptyEl.classList.add('hidden');
+            labelEl.textContent = moodData.dominantMood ? `mostly ${moodData.dominantMood}` : '';
+
+            listEl.innerHTML = moodData.distribution.map((item) => `
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.35rem 0;">
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-size: 0.95rem; font-weight: 600; color: var(--nuuko-espresso); text-transform: lowercase;">${escapeHtml(item.mood)}</span>
+                        <span style="font-size: 0.75rem; color: var(--nuuko-stone);">${item.count} ${item.count === 1 ? 'entry' : 'entries'}</span>
                     </div>
-                    
-                    <!-- Book Center Divider -->
-                    <div style="width: 2px; background: linear-gradient(180deg, rgba(154, 107, 81, 0.3) 0%, rgba(154, 107, 81, 0.1) 100%); border-radius: 1px; margin: 1rem 0;"></div>
-                    
-                    <!-- Right Pages -->
-                    <div>
-                        ${rightPages.map((entry, index) => {
-                            const date = new Date(entry.createdAt).toLocaleDateString('en-US', {
-                                month: 'short',
-                                day: 'numeric'
-                            });
-                            
-                            const preview = entry.content.length > 80 
-                                ? entry.content.substring(0, 80) + '...'
-                                : entry.content;
-                            
-                            return `
-                                <div style="margin-bottom: ${index < rightPages.length - 1 ? '1.5rem' : '0'};">
-                                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
-                                        <h4 style="font-size: 1rem; font-weight: 600; color: var(--nuuko-espresso); margin: 0;">${date}</h4>
-                                        <div style="background: rgba(154, 107, 81, 0.6); color: white; padding: 0.25rem 0.5rem; border-radius: 8px; font-size: 0.75rem; font-weight: 500;">word</div>
-                                    </div>
-                                    <p style="font-size: 0.875rem; color: var(--nuuko-stone); line-height: 1.6; margin: 0;">${preview}</p>
+                    <div style="flex: 1; margin-left: 1rem; position: relative; height: 8px; background: rgba(107, 143, 113, 0.15); border-radius: 999px;">
+                        <div style="position: absolute; top: 0; left: 0; bottom: 0; width: ${item.percentage}%; background: rgba(107, 143, 113, 0.7); border-radius: 999px;"></div>
+                    </div>
+                    <span style="min-width: 36px; text-align: right; font-size: 0.85rem; color: var(--nuuko-stone);">${item.percentage}%</span>
+                </div>
+            `).join('');
+        }
+
+        function renderPromptUsage(promptData) {
+            const listEl = document.getElementById('promptUsageList');
+            const emptyEl = document.getElementById('promptUsageEmpty');
+            const labelEl = document.getElementById('promptCountLabel');
+
+            if (!promptData.usage.length) {
+                listEl.innerHTML = '';
+                emptyEl.classList.remove('hidden');
+                labelEl.textContent = '';
+                return;
+            }
+
+            emptyEl.classList.add('hidden');
+            labelEl.textContent = `${promptData.count} ${promptData.count === 1 ? 'prompt' : 'prompts'}`;
+
+            listEl.innerHTML = promptData.usage.map((item) => `
+                <div style="padding: 0.75rem 0; border-bottom: 1px solid rgba(61, 52, 44, 0.1);">
+                    <div style="font-size: 0.95rem; font-weight: 600; color: var(--nuuko-espresso); margin-bottom: 0.25rem;">${escapeHtml(item.prompt)}</div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--nuuko-stone);">
+                        <span>${item.count} ${item.count === 1 ? 'entry' : 'entries'}</span>
+                        <span>${item.percentage}%</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderRecentPages(entries) {
+            const container = document.getElementById('recentPagesList');
+            const label = document.getElementById('recentPagesLabel');
+            if (!entries.length) {
+                container.innerHTML = '<p class="text-muted text-center" style="padding: 1rem 0;">write a page to see it appear here</p>';
+                label.textContent = 'recent entries';
+                return;
+            }
+
+            label.textContent = `showing ${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}`;
+            container.innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    ${entries.map((entry) => {
+                        const date = formatReadableDate(entry.createdAt);
+                        const preview = entry.content?.length > 120
+                            ? `${entry.content.substring(0, 120)}…`
+                            : entry.content || '';
+                        const tags = Array.isArray(entry.tags) ? entry.tags : [];
+                        const tagsMarkup = tags.length > 0
+                            ? `<div style="display:flex; flex-wrap:wrap; gap:0.35rem; margin-top:0.5rem;">
+                                    ${tags.map(tag => `<span style="background: rgba(154, 107, 81, 0.12); color: var(--nuuko-clay); padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem;">${escapeHtml(tag)}</span>`).join('')}
+                               </div>`
+                            : '';
+                        const safeMood = entry.mood ? escapeHtml(entry.mood) : '';
+                        const moodBadge = safeMood
+                            ? `<span style="background: rgba(107, 143, 113, 0.15); color: var(--nuuko-green); padding: 0.2rem 0.6rem; border-radius: 999px; font-size: 0.75rem;">${safeMood}</span>`
+                            : '';
+                        const previewHtml = preview
+                            ? escapeHtml(preview)
+                            : '<em>no text saved</em>';
+                        return `
+                            <div class="paper-texture" style="padding: 1rem 1.25rem; border-radius: 16px; border: 1px solid rgba(61, 52, 44, 0.08);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <div style="font-size: 0.95rem; font-weight: 600; color: var(--nuuko-espresso);">${date}</div>
+                                    ${moodBadge}
                                 </div>
-                            `;
-                        }).join('')}
+                                <p style="margin: 0; font-size: 0.95rem; color: var(--nuuko-stone); line-height: 1.6;">${previewHtml}</p>
+                                ${tagsMarkup}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function renderSummaryHistory(summaries, highlightId = null) {
+            const listEl = document.getElementById('summaryHistoryList');
+            const emptyEl = document.getElementById('summaryHistoryEmpty');
+            if (!listEl || !emptyEl) return;
+
+            if (!summaries || summaries.length === 0) {
+                emptyEl.classList.remove('hidden');
+                listEl.innerHTML = '';
+                return;
+            }
+
+            emptyEl.classList.add('hidden');
+            listEl.innerHTML = summaries.map((summary) => renderSummaryHistoryItem(summary, highlightId)).join('');
+
+            listEl.querySelectorAll('.summary-history-view').forEach((button) => {
+                button.addEventListener('click', () => openSummaryDetailModal(button.dataset.summaryId));
+            });
+
+            listEl.querySelectorAll('.summary-history-delete').forEach((button) => {
+                button.addEventListener('click', () => deleteSummaryRecord(button.dataset.summaryId));
+            });
+        }
+
+        function renderSummaryHistoryItem(summary, highlightId) {
+            const range = formatSummaryRange(summary);
+            const snippet = summary.text?.slice(0, 180) || '';
+            const safeSnippet = escapeHtml(snippet);
+            const isHighlight = highlightId && String(summary.id) === String(highlightId);
+            const highlightClass = isHighlight ? 'summary-history-item--highlight' : '';
+            const snippetSuffix = summary.text?.length > 180 ? '…' : '';
+            const cardThumbs = renderHistoryCardThumbs(summary);
+            const cadenceBadge = renderCadenceBadge(summary.cadence);
+            const originBadge = renderOriginBadge(summary);
+            const hero = buildHistoryHero(summary);
+            const highlightLine = buildHistoryHighlight(summary);
+
+            return `
+                <div class="paper-texture summary-history-item ${highlightClass}">
+                    <div class="summary-history-header">
+                        <div>
+                            <div class="summary-history-date">${escapeHtml(formatReadableDate(summary.createdAt))}</div>
+                            <div class="summary-history-range">${escapeHtml(range)}</div>
+                        </div>
+                        <div class="summary-history-actions">
+                            <button class="btn btn-ghost summary-history-view" data-summary-id="${escapeHtml(String(summary.id))}">
+                                <img src="assets/icons/icon-insights.svg" alt="view" style="width: 14px; height: 14px;">
+                                <span>view</span>
+                            </button>
+                            <button class="btn btn-ghost summary-history-delete" data-summary-id="${escapeHtml(String(summary.id))}" style="color: var(--mood-anxious);">
+                                <span>delete</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="summary-history-badges">
+                        ${cadenceBadge}
+                        ${originBadge}
+                    </div>
+                    ${hero}
+                    ${highlightLine}
+                    ${cardThumbs}
+                </div>
+            `;
+        }
+
+        function buildHistoryHero(summary = {}) {
+            const metrics = summarizeHistoryMetrics(summary);
+            if (!metrics) return '';
+            return `
+                <div class="summary-history-hero">
+                    <div class="summary-history-hero-value">${escapeHtml(metrics.value)}</div>
+                    <div class="summary-history-hero-label">${escapeHtml(metrics.label)}</div>
+                </div>
+            `;
+        }
+
+        function buildHistoryHighlight(summary = {}) {
+            const highlight = (summary.summarySentence && summary.summarySentence.trim())
+                ? summary.summarySentence.trim()
+                : (Array.isArray(summary.highlights) && summary.highlights.length ? summary.highlights[0] : '');
+            if (!highlight) return '';
+            return `<p class="summary-history-snippet">${escapeHtml(highlight)}</p>`;
+        }
+
+        function summarizeHistoryMetrics(summary = {}) {
+            const analytics = summary.analytics || {};
+            if (analytics.daysJournaled && analytics.totalWords) {
+                return {
+                    value: `${analytics.daysJournaled} days`,
+                    label: `${(analytics.totalWords).toLocaleString()} words`
+                };
+            }
+            if (summary.cards && summary.cards.length) {
+                const primary = summary.cards.find((c) => c.type === 'activity' || c.type === 'volume') || summary.cards[0];
+                const value = extractPrimaryValue(primary);
+                const label = extractPrimaryLabel(primary) || (primary?.subtitle || '');
+                if (value || label) {
+                    return { value: value || label, label: value && label ? label : '' };
+                }
+            }
+            if (summary.text) {
+                const firstSentence = summary.text.split(/[\.\!\?]\s/).find(Boolean);
+                if (firstSentence) return { value: firstSentence.slice(0, 42), label: '' };
+            }
+            return null;
+        }
+
+        function renderCadenceBadge(cadence = 'manual') {
+            const label = cadence === 'manual' ? 'manual only' : `${cadence} cadence`;
+            return `<span class="summary-history-badge" data-tone="cadence">${escapeHtml(label)}</span>`;
+        }
+
+        function renderOriginBadge(summary = {}) {
+            const isFallback = summary.status === 'fallback'
+                || /fallback/i.test(summary.model || '');
+            if (!isFallback) return '';
+            const tone = isFallback ? 'fallback' : 'gemini';
+            const label = isFallback ? 'local summary' : 'ai summary';
+            const detail = summary.model ? ` title="${escapeHtml(summary.model)}"` : '';
+            return `<span class="summary-history-badge" data-tone="${tone}"${detail}>${label}</span>`;
+        }
+
+        function renderHistoryCardThumbs(summary = {}) {
+            if (!Array.isArray(summary.cards) || summary.cards.length === 0) return '';
+            const thumbs = summary.cards.slice(0, 3).map((card) => renderHistoryCardThumb(card)).join('');
+            return `<div class="summary-history-card-thumbs">${thumbs}</div>`;
+        }
+
+        function renderHistoryCardThumb(card = {}) {
+            const icon = card.icon || card.emoji || inferWrappedIcon(card.type) || '🪶';
+            const title = card.title || toTitleCase(card.type || 'card');
+            return `
+                <div class="summary-history-card-thumb">
+                    <span class="summary-history-card-icon">${escapeHtml(icon)}</span>
+                    <span class="summary-history-card-title">${escapeHtml(title)}</span>
+                </div>
+            `;
+        }
+
+        function openSummaryDetailModal(summaryId) {
+            if (!summaryId) return;
+            const modal = document.getElementById('summaryDetailModal');
+            if (!modal) return;
+            const summary = latestSummariesCache.find(item => String(item.id) === String(summaryId));
+            if (!summary) return;
+            currentSummaryDetail = summary;
+
+            document.getElementById('summaryModalTitle').textContent = `summary from ${formatReadableDate(summary.createdAt)}`;
+            document.getElementById('summaryModalRange').textContent = formatSummaryRange(summary);
+            renderSummaryModalBody(summary);
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function renderSummaryModalBody(summary = {}) {
+            const textEl = document.getElementById('summaryModalText');
+            const highlightsEl = document.getElementById('summaryModalHighlights');
+            if (!textEl || !highlightsEl) return;
+
+            const highlightList = Array.isArray(summary.highlights) ? summary.highlights.filter(Boolean) : [];
+            const summarySentence = summary.summarySentence || 'nuuko wrapped is ready';
+            const cards = Array.isArray(summary.cards) ? summary.cards.slice(0, 6) : [];
+            const analytics = summary.analytics || {};
+
+            highlightsEl.innerHTML = `
+                <div class="summary-modal-hero">
+                    ${renderSummaryHeroStat(analytics.daysJournaled || cards[0]?.data?.days || '—', 'days')}
+                    ${renderSummaryHeroStat(formatHeroNumber(analytics.totalWords || cards[0]?.data?.words || '—'), 'words')}
+                </div>
+                <div class="summary-modal-block">
+                    <h4 class="summary-modal-heading">recap</h4>
+                    <p class="summary-modal-lede">${escapeHtml(summarySentence)}</p>
+                    ${highlightList.length ? `
+                        <div class="summary-modal-chip-row">
+                            ${highlightList.map(item => `<span class="wrapped-highlight">${escapeHtml(item)}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+                ${renderSummaryModalCards(cards, analytics)}
+            `;
+
+            textEl.innerHTML = '';
+        }
+
+        function renderSummaryHeroStat(value, label) {
+            return `
+                <div class="summary-modal-hero-stat">
+                    <div class="summary-modal-hero-value">${escapeHtml(String(value))}</div>
+                    <div class="summary-modal-hero-label">${escapeHtml(label)}</div>
+                </div>
+            `;
+        }
+
+        function formatHeroNumber(value) {
+            if (typeof value === 'number') return value.toLocaleString();
+            if (!value) return '—';
+            return String(value);
+        }
+
+        function renderSummaryModalCards(cards = [], analytics = {}) {
+            if (!cards.length) {
+                cards = buildFallbackCardsFromAnalytics(analytics);
+            }
+            if (!cards.length) return '';
+            return `
+                <div class="summary-modal-block">
+                    <h4 class="summary-modal-heading">your cards</h4>
+                    <div class="summary-modal-card-list">
+                        ${cards.map((card) => `
+                            <div class="summary-modal-card">
+                                <div class="summary-modal-card-icon">${escapeHtml(card.icon || card.emoji || inferWrappedIcon(card.type) || '🪶')}</div>
+                                <div class="summary-modal-card-text">
+                                    <div class="summary-modal-card-title">${escapeHtml(card.title || toTitleCase(card.type || 'card'))}</div>
+                                    ${card.body ? `<div class="summary-modal-card-body">${escapeHtml(card.body)}</div>` : ''}
+                                    ${renderSummaryModalCardData(card)}
+                                </div>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
             `;
         }
-        
-        // Load insights when page loads
-        window.addEventListener('load', loadInsights);
-        
-        // Refresh insights if storage changes (from other tabs)
-        window.addEventListener('storage', loadInsights);
+
+        function buildFallbackCardsFromAnalytics(analytics = {}) {
+            if (!analytics || Object.keys(analytics).length === 0) return [];
+            const cards = [];
+            if (analytics.daysJournaled || analytics.longestStreak) {
+                cards.push({
+                    type: 'activity',
+                    title: 'Activity',
+                    body: `You journaled ${analytics.daysJournaled || 0} days.`,
+                    data: {
+                        list: analytics.longestStreak ? [{ label: 'longest streak', value: `${analytics.longestStreak} days` }] : []
+                    }
+                });
+            }
+            if (analytics.totalWords) {
+                cards.push({
+                    type: 'volume',
+                    title: 'Words',
+                    body: `${(analytics.totalWords || 0).toLocaleString?.() || analytics.totalWords} words this window.`,
+                });
+            }
+            if (analytics.moodDistribution && analytics.moodDistribution.length) {
+                const topMood = analytics.moodDistribution[0];
+                cards.push({
+                    type: 'mood',
+                    title: 'Mood mix',
+                    body: `${topMood.mood} led with ${topMood.percentage || topMood.share || ''}${typeof topMood.percentage === 'number' ? '%' : ''}`,
+                    data: {
+                        list: analytics.moodDistribution.slice(0, 3).map((item) => ({
+                            label: item.mood,
+                            value: `${item.percentage || item.share || ''}${typeof item.percentage === 'number' ? '%' : ''}`
+                        }))
+                    }
+                });
+            }
+            return cards.slice(0, 4);
+        }
+
+        function renderSummaryModalCardData(card = {}) {
+            const lines = [];
+            const listItems = getWrappedListItems(card);
+            if (listItems.length) {
+                lines.push(`<div class="summary-modal-mini-list">${listItems.slice(0,3).map((item) => {
+                    if (item && typeof item === 'object' && !Array.isArray(item)) {
+                        const label = item.label || item.name || item.mood || item.topic || item.word || item.title || '';
+                        const value = formatWrappedValue(item.value ?? item.count ?? item.share ?? item.percentage ?? item.percent ?? '');
+                        return `<div><strong>${escapeHtml(label)}</strong>${value ? ` · ${escapeHtml(value)}` : ''}</div>`;
+                    }
+                    return `<div>${escapeHtml(String(item))}</div>`;
+                }).join('')}</div>`);
+            }
+            const quotes = getQuoteList(card);
+            if (quotes.length) {
+                lines.push(`<div class="summary-modal-chip-row">${quotes.slice(0,2).map((q) => `<span class="wrapped-highlight">${escapeHtml(String(q))}</span>`).join('')}</div>`);
+            }
+            const words = getWordChips(card);
+            if (words.length) {
+                lines.push(`<div class="summary-modal-chip-row">${words.slice(0,4).map((w) => `<span class="wrapped-chip">${escapeHtml(formatWordChip(w))}</span>`).join('')}</div>`);
+            }
+            return lines.join('');
+        }
+
+        function closeSummaryDetailModal() {
+            const modal = document.getElementById('summaryDetailModal');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+            currentSummaryDetail = null;
+        }
+
+        async function deleteSummaryRecord(summaryId) {
+            if (!summaryId) return;
+            const confirmed = confirm('Delete this summary? This cannot be undone.');
+            if (!confirmed) return;
+            if (window.NuukoStorage?.deleteSummaryRecord) {
+                await NuukoStorage.deleteSummaryRecord(summaryId);
+            }
+            loadInsights();
+            closeSummaryDetailModal();
+        }
+
+        function formatSummaryRange(summary) {
+            const start = summary.rangeStart ? formatReadableDate(summary.rangeStart) : null;
+            const end = summary.rangeEnd ? formatReadableDate(summary.rangeEnd) : null;
+            if (start && end) return `${start} → ${end}`;
+            return 'custom range';
+        }
+
+        function escapeHtml(value = '') {
+            return String(value).replace(/[&<>"']/g, (char) => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[char]);
+        }
+
+        function showEmptyState() {
+            document.getElementById('emptyState').classList.remove('hidden');
+            document.getElementById('statsGrid').classList.add('hidden');
+        }
+
+        function hideEmptyState() {
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('statsGrid').classList.remove('hidden');
+        }
+
+        function startOfDay(value) {
+            const day = new Date(value);
+            day.setHours(0, 0, 0, 0);
+            return day.getTime();
+        }
+
+        function formatDayKey(isoString) {
+            const date = new Date(isoString);
+            return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+        }
+
+        function formatReadableDate(isoString) {
+            return new Date(isoString).toLocaleDateString('en-US', {
+                month: 'short',
+                day: 'numeric'
+            }).toLowerCase();
+        }
+
+        function getPagesSubtext(totalEntries) {
+            if (totalEntries === 1) return 'just getting started';
+            if (totalEntries < 10) return 'building a habit';
+            if (totalEntries < 30) return 'finding your rhythm';
+            return 'a beautiful collection';
+        }
+
+        function getWordsNote(totalWords) {
+            if (totalWords > 10000) return 'basically, a short novel';
+            if (totalWords > 5000) return 'like a long short story';
+            if (totalWords > 1000) return 'quite a collection';
+            return 'just getting started';
+        }
+
+        function setTimestamp(timestamp, fromCache = false) {
+            const el = document.getElementById('insightsTimestamp');
+            if (!el) return;
+            if (!timestamp) {
+                el.textContent = '';
+                return;
+            }
+            const date = new Date(timestamp);
+            const formatted = date.toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit'
+            }).toLowerCase();
+            el.textContent = fromCache
+                ? `showing saved insights from ${formatted}`
+                : `updated ${formatted}`;
+        }
+
+        document.getElementById('refreshSummariesButton')?.addEventListener('click', () => loadInsights({ force: true }));
+        document.getElementById('closeSummaryDetailModal')?.addEventListener('click', closeSummaryDetailModal);
+        document.getElementById('summaryModalDelete')?.addEventListener('click', () => {
+            if (currentSummaryDetail) {
+                deleteSummaryRecord(currentSummaryDetail.id);
+            }
+        });
+
+        window.addEventListener('load', () => loadInsights());
+        window.addEventListener('storage', () => loadInsights({ force: true }));
+        window.addEventListener('nuuko:storage', (event) => {
+            const type = event?.detail?.type;
+            if (type === 'entries' || type === 'stats' || type === 'settings' || type === 'summaries') {
+                loadInsights();
+            }
+            if (type === 'insights') {
+                loadInsights();
+            }
+        });
+        window.addEventListener('nuuko:summary-finished', (event) => {
+            const id = event?.detail?.summaryId;
+            loadInsights({ force: true, highlightSummaryId: id });
+        });
     </script>
+    <script type="module" src="wrapped-insights.js"></script>
 </body>
 </html>

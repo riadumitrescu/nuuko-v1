@@ -30,6 +30,10 @@
                     <img src="assets/icons/icon-insights.svg" alt="insights" class="icon" style="width: 16px; height: 16px;">
                     <span>patterns</span>
                 </a>
+                <a href="feedback.html" class="nav-link">
+                    <img src="assets/icons/icon-feedback.svg" alt="feedback" class="icon" style="width: 16px; height: 16px;">
+                    <span>feedback</span>
+                </a>
             </div>
         </div>
     </nav>
@@ -45,15 +49,45 @@
         </header>
 
         <!-- Prompt Section -->
-        <section class="card-minimal paper-texture mb-xl slide-up text-center" style="border-left: 4px solid rgba(107, 143, 113, 0.4); animation-delay: 0.1s; max-width: 600px; margin-left: auto; margin-right: auto;">
-            <div class="flex items-center justify-center gap-md">
-                <img src="assets/icons/magic-wand-icon.svg" alt="magic prompt" style="width: 20px; height: 20px;">
-                <div>
-                    <h3 class="mb-sm" style="font-size: 1.125rem;">today's reflection prompt:</h3>
-                    <p class="italic text-muted" id="writePagePrompt" style="font-size: 1rem; margin: 0; color: var(--nuuko-stone); cursor: pointer; border-bottom: 2px dashed rgba(154, 107, 81, 0.3); transition: all 0.3s ease; display: inline-block;" onclick="editPrompt()">what surprised you today?</p>
+        <section id="promptSection" class="card-minimal paper-texture mb-xl slide-up" style="border-left: 4px solid rgba(107, 143, 113, 0.4); animation-delay: 0.1s; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <div class="flex flex-col gap-md">
+                <div class="flex items-center justify-between gap-md">
+                    <div class="flex items-center gap-md">
+                        <button type="button" onclick="changePrompt()" aria-label="new prompt" style="border: none; width: 44px; height: 44px; border-radius: 50%; background: rgba(107, 143, 113, 0.15); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: inset 0 1px 2px rgba(255,255,255,0.5);">
+                            <img src="assets/icons/magic-wand-icon.svg" alt="change prompt" style="width: 18px; height: 18px;">
+                        </button>
+                        <div>
+                            <p style="margin: 0; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(61,52,44,0.6);">today's reflection prompt</p>
+                            <p class="italic text-muted" id="writePagePrompt" style="font-size: 1rem; margin: 0; color: var(--nuuko-stone); border-bottom: 2px dashed rgba(154, 107, 81, 0.3); display: inline-block;">what surprised you today?</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-xs">
+                        <button type="button" aria-label="edit prompt" onclick="startPromptEdit()" style="border: none; width: 32px; height: 32px; border-radius: 50%; background: rgba(154, 107, 81, 0.15); color: var(--nuuko-clay); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                            ✏️
+                        </button>
+                        <button type="button" aria-label="hide prompt" onclick="dismissPromptSection()" style="border: none; width: 32px; height: 32px; border-radius: 50%; background: rgba(214, 126, 126, 0.15); color: var(--mood-anxious); display: flex; align-items: center; justify-content: center; cursor: pointer;">
+                            ✕
+                        </button>
+                    </div>
+                </div>
+                <div id="promptEditor" class="hidden" style="margin-top: 0.5rem;">
+                    <textarea id="promptEditInput" rows="2" style="width: 100%; padding: 0.75rem 1rem; border-radius: 1rem; border: 1px solid rgba(154,107,81,0.25); font-size: 0.95rem; font-family: var(--font-serif); color: var(--nuuko-espresso);"></textarea>
+                    <div class="flex items-center justify-center gap-sm" style="margin-top: 0.5rem;">
+                        <button type="button" class="btn btn-primary text-sm" onclick="savePromptEdit()" style="display: inline-flex; gap: 0.35rem;">
+                            <span>save</span>
+                        </button>
+                        <button type="button" class="btn btn-ghost text-sm" onclick="cancelPromptEdit()">cancel</button>
+                    </div>
                 </div>
             </div>
         </section>
+
+        <div id="promptHiddenNotice" class="hidden text-center slide-up" style="animation-delay: 0.1s; margin-bottom: 1.5rem;">
+            <div class="card-minimal paper-texture" style="padding: 1rem 1.5rem; display: inline-flex; gap: 0.75rem; align-items: center;">
+                <span style="color: var(--nuuko-stone); font-size: 0.9rem;">prompt hidden for this entry.</span>
+                <button type="button" class="btn btn-ghost text-sm" onclick="restorePromptSection()">show prompt</button>
+            </div>
+        </div>
 
         <!-- Large Writing Notebook -->
         <section class="slide-up" style="animation-delay: 0.2s;">
@@ -105,13 +139,16 @@
                     <div class="mood-thumb" id="moodThumb" style="left: 50%;"></div>
                 </div>
                 
-                <div class="mood-labels">
-                    <span>anxious</span>
-                    <span>grateful</span>
+                <div class="mood-labels" style="display: grid; grid-template-columns: repeat(5, 1fr); font-size: 0.8rem; text-transform: lowercase; color: var(--nuuko-stone); margin-top: 0.75rem;">
+                    <span style="text-align: left;">anxious</span>
+                    <span style="text-align: center;">sad</span>
+                    <span style="text-align: center;">neutral</span>
+                    <span style="text-align: center;">calm</span>
+                    <span style="text-align: right;">happy</span>
                 </div>
                 
                 <div class="mood-current text-center">
-                    <p id="currentMood">thoughtful</p>
+                    <p id="currentMood">neutral</p>
                 </div>
             </section>
 
@@ -143,6 +180,16 @@
                         <span id="saveButtonText">save page</span>
                     </button>
                     
+                    <button 
+                        id="deleteButton" 
+                        type="button"
+                        class="btn btn-ghost w-full hidden"
+                        style="justify-content: center; color: var(--mood-anxious); border: 1px dashed rgba(214, 126, 126, 0.4);"
+                    >
+                        <img src="assets/icons/streak-icon.svg" alt="delete" style="width: 16px; height: 16px;">
+                        <span>delete entry</span>
+                    </button>
+                    
                     <a href="index.html" class="btn btn-ghost w-full" style="justify-content: center;">
                         <img src="assets/icons/icon-library.svg" alt="home" style="width: 16px; height: 16px;">
                         <span>back home</span>
@@ -151,10 +198,27 @@
             </section>
         </div>
 
+        <!-- Entry Details -->
+        <section class="card-minimal paper-texture slide-up" style="margin-top: 2rem; animation-delay: 0.35s;">
+            <div id="editingBanner" class="hidden" style="display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; padding: 0.75rem 1rem; border: 1px dashed rgba(154, 107, 81, 0.3); border-radius: 12px; background: rgba(154, 107, 81, 0.08);">
+                <p id="editingBannerText" style="margin: 0; font-size: 0.95rem; color: var(--nuuko-espresso);"></p>
+                <button id="cancelEditingButton" type="button" class="btn btn-ghost" style="padding: 0.35rem 0.75rem;">start fresh</button>
+            </div>
+            <div>
+                <label for="summaryToggle" style="display: block; font-size: 0.875rem; color: var(--nuuko-stone); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem;">include in ai summaries</label>
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <input type="checkbox" id="summaryToggle" checked aria-label="Include this entry when generating summaries" style="width: 18px; height: 18px;">
+                    <span style="font-size: 0.95rem; color: var(--nuuko-espresso);">keep this reflection in the next summary</span>
+                </div>
+            </div>
+        </section>
+
         <!-- Error Message -->
         <div id="errorMessage" class="hidden mt-lg" style="background: rgba(214, 126, 126, 0.1); border: 1px solid rgba(214, 126, 126, 0.3); border-radius: 12px; padding: 1rem; backdrop-filter: blur(8px); max-width: 600px; margin: 2rem auto 0;">
             <p style="color: var(--mood-anxious); font-size: 0.875rem; margin: 0; text-align: center;"></p>
         </div>
+        
+        <div id="statusBanner" class="hidden" style="background: rgba(107, 143, 113, 0.12); border: 1px solid rgba(107, 143, 113, 0.3); color: var(--nuuko-green); border-radius: 12px; padding: 0.85rem 1rem; backdrop-filter: blur(8px); max-width: 600px; margin: 1rem auto 0; font-size: 0.9rem; text-align: center;"></div>
     </main>
 
     <!-- Success Modal -->
@@ -173,240 +237,697 @@
     </div>
 
     <!-- JavaScript -->
+    <script src="storage.js"></script>
+    <script src="summary.js"></script>
+    <script src="promptEngine.js"></script>
+    <script src="script.js"></script>
     <script>
-        // Initialize mood and writing functionality
-        let currentMoodPosition = 50;
-        let wordCount = 0;
-        
-        // DOM elements
-        const writingArea = document.getElementById('writingArea');
-        const moodSpectrum = document.getElementById('moodSpectrum');
-        const moodThumb = document.getElementById('moodThumb');
-        const currentMoodDisplay = document.getElementById('currentMood');
-        const wordCountDisplay = document.getElementById('wordCount');
-        const readingTimeDisplay = document.getElementById('readingTime');
-        const saveButton = document.getElementById('saveButton');
-        const saveButtonText = document.getElementById('saveButtonText');
-        const errorMessage = document.getElementById('errorMessage');
-        const successModal = document.getElementById('successModal');
-        const closeModal = document.getElementById('closeModal');
-        const currentDateDisplay = document.getElementById('currentDate');
-        
-        // Set current date
-        const today = new Date();
-        const dateString = today.toLocaleDateString('en-US', { 
-            weekday: 'long', 
-            month: 'long', 
-            day: 'numeric'
-        }).toLowerCase();
-        currentDateDisplay.textContent = dateString;
-        
-        // Load current prompt from localStorage (same as homepage)
-        const currentPrompt = localStorage.getItem('nuuko_current_prompt') || 'what surprised you today?';
-        const writePagePrompt = document.getElementById('writePagePrompt');
-        if (writePagePrompt) {
-            writePagePrompt.textContent = currentPrompt;
-        }
-        
-        // Mood mapping
-        const moods = ['anxious', 'melancholy', 'calm', 'thoughtful', 'joyful', 'energetic', 'grateful'];
-        
-        function getMoodFromPosition(position) {
-            const index = Math.floor((position / 100) * 7);
-            return moods[Math.min(index, 6)];
-        }
-        
-        function updateMoodDisplay() {
-            currentMoodDisplay.textContent = getMoodFromPosition(currentMoodPosition);
-        }
-        
-        // Mood spectrum interaction
-        moodSpectrum.addEventListener('click', (e) => {
-            const rect = moodSpectrum.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+        (function () {
+            const DRAFT_KEY = 'nuuko_draft';
+            const moods = ['anxious', 'sad', 'neutral', 'calm', 'happy'];
+            const FALLBACK_PROMPTS = [
+                'what surprised you today?',
+                'what made you smile recently?',
+                'what challenged you today?',
+                'what did you learn about yourself?',
+                'what moment do you want to remember?'
+            ];
+            const promptEngine = window.NuukoPromptEngine;
             
-            currentMoodPosition = percentage;
-            moodThumb.style.left = percentage + '%';
-            updateMoodDisplay();
-        });
-        
-        // Word count and reading time
-        function updateStats() {
-            const text = writingArea.value.trim();
-            const words = text === '' ? 0 : text.split(/\s+/).filter(word => word.length > 0).length;
+            let currentMoodPosition = 50;
+            let wordCount = 0;
+            let editingEntry = null;
+            let originalUpdatedAt = null;
+            let currentPromptData = null;
             
-            wordCount = words;
-            wordCountDisplay.textContent = wordCount;
+            const writingArea = document.getElementById('writingArea');
+            const moodSpectrum = document.getElementById('moodSpectrum');
+            const moodThumb = document.getElementById('moodThumb');
+            const currentMoodDisplay = document.getElementById('currentMood');
+            const wordCountDisplay = document.getElementById('wordCount');
+            const readingTimeDisplay = document.getElementById('readingTime');
+            const saveButton = document.getElementById('saveButton');
+            const saveButtonText = document.getElementById('saveButtonText');
+            const deleteButton = document.getElementById('deleteButton');
+            const errorMessage = document.getElementById('errorMessage');
+            const statusBanner = document.getElementById('statusBanner');
+            const successModal = document.getElementById('successModal');
+            const closeModal = document.getElementById('closeModal');
+            const currentDateDisplay = document.getElementById('currentDate');
+            const writePagePrompt = document.getElementById('writePagePrompt');
+            const promptEditor = document.getElementById('promptEditor');
+            const promptEditInput = document.getElementById('promptEditInput');
+            const promptHiddenNotice = document.getElementById('promptHiddenNotice');
+            const promptSectionCard = document.getElementById('promptSection');
+            const tagsInput = document.getElementById('tagsInput');
+            const summaryToggle = document.getElementById('summaryToggle');
+            const editingBanner = document.getElementById('editingBanner');
+            const editingBannerText = document.getElementById('editingBannerText');
+            const cancelEditingButton = document.getElementById('cancelEditingButton');
+            const pageTitle = document.getElementById('pageTitle');
             
-            const readingMinutes = Math.max(1, Math.ceil(wordCount / 200));
-            readingTimeDisplay.textContent = readingMinutes + ' min';
+            if (!writingArea) return;
             
-            // Enable/disable save button
-            saveButton.disabled = wordCount === 0;
-            saveButton.style.opacity = wordCount === 0 ? '0.5' : '1';
-            saveButton.style.cursor = wordCount === 0 ? 'not-allowed' : 'pointer';
-        }
-        
-        // Auto-resize textarea
-        function autoResize() {
-            writingArea.style.height = 'auto';
-            writingArea.style.height = Math.max(600, writingArea.scrollHeight) + 'px';
-        }
-        
-        // Writing area events
-        writingArea.addEventListener('input', () => {
-            updateStats();
-            autoResize();
-            hideError();
-        });
-        
-        writingArea.addEventListener('keydown', autoResize);
-        
-        // Error handling
-        function showError(message) {
-            errorMessage.querySelector('p').textContent = message;
-            errorMessage.classList.remove('hidden');
-        }
-        
-        function hideError() {
-            errorMessage.classList.add('hidden');
-        }
-        
-        // Save functionality
-        function saveEntry() {
-            const content = writingArea.value.trim();
+            const urlParams = new URLSearchParams(window.location.search);
+            const entryIdParam = urlParams.get('entryId');
             
-            if (content.length < 10) {
-                showError('please write a bit more to save your reflection');
-                return;
+            const storageReady = window.NuukoStorage?.ready
+                ? NuukoStorage.ready.catch((error) => {
+                    console.warn('[Nuuko] storage init issue on write page:', error);
+                })
+                : Promise.resolve();
+            
+            const today = new Date();
+            const dateString = today.toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric'
+            }).toLowerCase();
+            currentDateDisplay.textContent = dateString;
+            
+            init();
+            
+            function init() {
+                attachEventListeners();
+                updateMoodDisplay();
+                autoResize();
+                syncPromptFromSettings();
+                loadEnginePrompt();
+                evaluatePageTitle();
+                
+                storageReady.then(() => {
+                    if (entryIdParam) {
+                        loadEntryForEditing(entryIdParam);
+                    } else {
+                        applyDraftIfRelevant();
+                    }
+                });
             }
             
-            // Show saving state
-            saveButtonText.textContent = 'saving...';
-            saveButton.disabled = true;
+            function attachEventListeners() {
+                writingArea.addEventListener('input', () => {
+                    updateStats();
+                    autoResize();
+                    hideError();
+                    persistDraft();
+                });
+                
+                writingArea.addEventListener('keydown', autoResize);
+                
+                if (moodSpectrum) {
+                    moodSpectrum.addEventListener('click', (e) => {
+                        const rect = moodSpectrum.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const percentage = Math.max(0, Math.min(100, (x / rect.width) * 100));
+                        setMoodPosition(percentage);
+                        persistDraft();
+                    });
+                }
+                
+                tagsInput?.addEventListener('input', persistDraft);
+                summaryToggle?.addEventListener('change', persistDraft);
+                
+                saveButton?.addEventListener('click', saveEntry);
+                deleteButton?.addEventListener('click', handleDeleteEntry);
+                cancelEditingButton?.addEventListener('click', resetEditingState);
+                
+                document.addEventListener('keydown', (e) => {
+                    if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+                        e.preventDefault();
+                        if (!saveButton.disabled) {
+                            saveEntry();
+                        }
+                    }
+                    
+                    if (e.key === 'Escape' && !successModal.classList.contains('hidden')) {
+                        closeModal.click();
+                    }
+                });
+                
+                window.addEventListener('load', () => {
+                    writingArea.focus();
+                    autoResize();
+                });
+                
+                closeModal?.addEventListener('click', () => {
+                    successModal.classList.add('hidden');
+                    successModal.classList.remove('modal-visible');
+                    window.location.href = 'index.html';
+                });
+                
+                window.addEventListener('storage', (event) => {
+                    if (event.key === DRAFT_KEY) {
+                        applyDraftIfRelevant();
+                    }
+                });
+                
+                window.addEventListener('nuuko:storage', (event) => {
+                    if (event?.detail?.type === 'settings' && !editingEntry) {
+                        syncPromptFromSettings();
+                    }
+                });
+                
+                setInterval(persistDraft, 30000);
+            }
             
-            // Simulate save (in real app, this would save to localStorage/database)
-            setTimeout(() => {
-                // Store the entry
-                const entry = {
-                    id: Date.now(),
-                    content: content,
-                    mood: getMoodFromPosition(currentMoodPosition),
-                    wordCount: wordCount,
-                    createdAt: new Date().toISOString(),
-                    date: dateString
-                };
+            function syncPromptFromSettings() {
+                let prompt = 'what surprised you today?';
+                if (window.NuukoStorage) {
+                    prompt = NuukoStorage.getSettingsSnapshot().currentPrompt || prompt;
+                } else {
+                    prompt = localStorage.getItem('nuuko_current_prompt') || prompt;
+                }
                 
-                // Save to localStorage
-                const entries = JSON.parse(localStorage.getItem('nuuko_entries') || '[]');
-                entries.unshift(entry); // Add to beginning
-                localStorage.setItem('nuuko_entries', JSON.stringify(entries.slice(0, 50))); // Keep only last 50
+                if (writePagePrompt && !editingEntry && !currentPromptData) {
+                    writePagePrompt.textContent = prompt;
+                }
+            }
+
+            function applyPromptToUI(prompt) {
+                if (editingEntry) return;
+                updatePromptDisplays(prompt, { animateHome: true, animateWrite: true });
+                saveCurrentPrompt(prompt);
+                closePromptEditor(false);
+            }
+
+            async function loadEnginePrompt() {
+                if (!promptEngine || editingEntry) return;
+                try {
+                    currentPromptData = await promptEngine.getPrompt();
+                    applyPromptToUI(currentPromptData.primaryPrompt);
+                } catch (error) {
+                    console.warn('[Nuuko] prompt engine unavailable, using stored prompt', error);
+                }
+            }
+
+            function saveCurrentPrompt(prompt) {
+                if (!prompt) return;
+                if (window.NuukoStorage) {
+                    NuukoStorage.updateSettings({ currentPrompt: prompt });
+                } else {
+                    localStorage.setItem('nuuko_current_prompt', prompt);
+                }
+            }
+            function evaluatePageTitle() {
+                const entries = window.NuukoStorage
+                    ? NuukoStorage.getEntriesSnapshot()
+                    : JSON.parse(localStorage.getItem('nuuko_entries') || '[]');
                 
-                // Update stats
-                const stats = JSON.parse(localStorage.getItem('nuuko_stats') || '{}');
-                stats.totalEntries = (stats.totalEntries || 0) + 1;
-                stats.totalWords = (stats.totalWords || 0) + wordCount;
-                stats.lastEntryDate = new Date().toISOString();
-                localStorage.setItem('nuuko_stats', JSON.stringify(stats));
-                
-                // Show success
-                successModal.classList.remove('hidden');
-                successModal.classList.add('modal-visible');
-                
-                // Reset form
-                writingArea.value = '';
-                updateStats();
-                saveButtonText.textContent = 'save page';
-            }, 1000);
-        }
-        
-        saveButton.addEventListener('click', saveEntry);
-        
-        // Success modal
-        closeModal.addEventListener('click', () => {
-            successModal.classList.add('hidden');
-            successModal.classList.remove('modal-visible');
-            window.location.href = 'index.html';
-        });
-        
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === 's') {
-                e.preventDefault();
-                if (!saveButton.disabled) {
-                    saveEntry();
+                if (entries.length === 0) {
+                    pageTitle.textContent = 'first entry';
+                } else if (!editingEntry) {
+                    pageTitle.textContent = 'new entry';
                 }
             }
             
-            if (e.key === 'Escape' && !successModal.classList.contains('hidden')) {
-                closeModal.click();
+            function getMoodFromPosition(position) {
+                const index = Math.floor((position / 100) * moods.length);
+                return moods[Math.min(index, moods.length - 1)];
             }
-        });
-        
-        // Focus on writing area when page loads
-        window.addEventListener('load', () => {
-            writingArea.focus();
-            updateMoodDisplay();
             
-            // Set appropriate page title
-            const entries = JSON.parse(localStorage.getItem('nuuko_entries') || '[]');
-            const pageTitle = document.getElementById('pageTitle');
-            if (entries.length === 0) {
-                pageTitle.textContent = 'first entry';
-            } else {
-                pageTitle.textContent = 'new entry';
+            function setMoodFromValue(value) {
+                if (!value) return;
+                const index = moods.indexOf(value);
+                if (index === -1) return;
+                const percentage = (index / (moods.length - 1)) * 100;
+                setMoodPosition(percentage);
             }
-        });
-        
-        // Auto-save draft every 30 seconds
-        setInterval(() => {
-            const content = writingArea.value.trim();
-            if (content.length > 0) {
-                localStorage.setItem('nuuko_draft', content);
-                localStorage.setItem('nuuko_draft_mood', currentMoodPosition);
-            }
-        }, 30000);
-        
-        // Load draft on page load
-        window.addEventListener('load', () => {
-            const draft = localStorage.getItem('nuuko_draft');
-            const draftMood = localStorage.getItem('nuuko_draft_mood');
             
-            if (draft && draft.trim().length > 0) {
-                writingArea.value = draft;
+            function setMoodPosition(position) {
+                currentMoodPosition = Math.max(0, Math.min(100, position));
+                if (moodThumb) {
+                    moodThumb.style.left = currentMoodPosition + '%';
+                }
+                updateMoodDisplay();
+            }
+            
+            function updateMoodDisplay() {
+                if (!currentMoodDisplay) return;
+                currentMoodDisplay.textContent = getMoodFromPosition(currentMoodPosition);
+            }
+            
+            function updateStats() {
+                const text = writingArea.value.trim();
+                const words = text === '' ? 0 : text.split(/\s+/).filter(Boolean).length;
+                
+                wordCount = words;
+                wordCountDisplay.textContent = wordCount;
+                
+                const readingMinutes = Math.max(1, Math.ceil(wordCount / 200));
+                readingTimeDisplay.textContent = readingMinutes + ' min';
+                
+                saveButton.disabled = wordCount === 0;
+                saveButton.style.opacity = wordCount === 0 ? '0.5' : '1';
+                saveButton.style.cursor = wordCount === 0 ? 'not-allowed' : 'pointer';
+            }
+            
+            function autoResize() {
+                writingArea.style.height = 'auto';
+                writingArea.style.height = Math.max(600, writingArea.scrollHeight) + 'px';
+            }
+            
+            function showError(message) {
+                if (!errorMessage) return;
+                errorMessage.querySelector('p').textContent = message;
+                errorMessage.classList.remove('hidden');
+                clearStatus();
+            }
+            
+            function hideError() {
+                errorMessage?.classList.add('hidden');
+            }
+            
+            function showStatus(message, tone = 'success') {
+                if (!statusBanner || !message) return;
+                const styles = {
+                    success: {
+                        background: 'rgba(107, 143, 113, 0.12)',
+                        border: 'rgba(107, 143, 113, 0.3)',
+                        color: 'var(--nuuko-green)'
+                    },
+                    error: {
+                        background: 'rgba(214, 126, 126, 0.12)',
+                        border: 'rgba(214, 126, 126, 0.4)',
+                        color: 'var(--mood-anxious)'
+                    },
+                    info: {
+                        background: 'rgba(154, 107, 81, 0.12)',
+                        border: 'rgba(154, 107, 81, 0.3)',
+                        color: 'var(--nuuko-clay)'
+                    }
+                };
+                const palette = styles[tone] || styles.success;
+                statusBanner.textContent = message;
+                statusBanner.style.background = palette.background;
+                statusBanner.style.borderColor = palette.border;
+                statusBanner.style.color = palette.color;
+                statusBanner.classList.remove('hidden');
+            }
+            
+            function clearStatus() {
+                statusBanner?.classList.add('hidden');
+            }
+            
+            async function loadEntryForEditing(entryId) {
+                await storageReady;
+                const entry = await fetchEntry(entryId);
+                
+                if (!entry) {
+                    showError('we could not find that page. starting a fresh one instead.');
+                    resetEditingState();
+                    return;
+                }
+                
+                editingEntry = entry;
+                originalUpdatedAt = entry.updatedAt || entry.createdAt;
+                
+                if (writePagePrompt && entry.prompt) {
+                    writePagePrompt.textContent = entry.prompt;
+                }
+                
+                applyEntryContent(entry);
+                if (tagsInput) {
+                if (tagsInput) {
+                    tagsInput.value = formatTags(entry.tags);
+                }
+                }
+                summaryToggle.checked = entry.includeInSummaries !== false;
+                
+                deleteButton.classList.remove('hidden');
+                editingBanner?.classList.remove('hidden');
+                const formattedDate = entry.createdAt
+                    ? new Date(entry.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric' }).toLowerCase()
+                    : 'this page';
+                editingBannerText.textContent = `editing entry from ${formattedDate}`;
+                saveButtonText.textContent = 'save changes';
+                pageTitle.textContent = 'edit entry';
+                
+                applyDraftIfRelevant(true);
+                showStatus('loaded your earlier page', 'info');
+            }
+            
+            function applyEntryContent(entry) {
+                writingArea.value = entry.content || '';
+                setMoodFromValue(entry.mood);
                 updateStats();
                 autoResize();
             }
             
-            if (draftMood) {
-                currentMoodPosition = parseFloat(draftMood);
-                moodThumb.style.left = currentMoodPosition + '%';
-                updateMoodDisplay();
-            }
-        });
-
-        // === PROMPT EDITING FUNCTIONS ===
-        function editPrompt() {
-            const currentPrompt = document.getElementById('writePagePrompt').textContent;
-            const newPrompt = prompt('What would you like to reflect on today?', currentPrompt);
-            
-            if (newPrompt && newPrompt.trim() !== '') {
-                const cleanPrompt = newPrompt.trim();
-                document.getElementById('writePagePrompt').textContent = cleanPrompt;
+            async function saveEntry() {
+                hideError();
+                clearStatus();
                 
-                // Save to localStorage for persistence
-                localStorage.setItem('nuuko_current_prompt', cleanPrompt);
+                const content = writingArea.value.trim();
+                if (content.length < 10) {
+                    showError('please write a bit more to save your reflection');
+                    return;
+                }
+                
+                saveButtonText.textContent = editingEntry ? 'saving changes...' : 'saving...';
+                saveButton.disabled = true;
+                
+                const promptSnapshot = writePagePrompt?.textContent?.trim() || '';
+                const createdAtISO = editingEntry?.createdAt || new Date().toISOString();
+                const createdAtDate = new Date(createdAtISO);
+                const tagsArray = parseTagsFromInput();
+                const timeBucket = bucketTimeOfDay(createdAtDate);
+                const openingPhrase = extractOpeningPhrase(content);
+                const startingPhraseCategory = categorizeOpeningPhrase(content);
+                const topics = deriveTopicsFromTags(tagsArray, content);
+
+                const entryPayload = {
+                    ...(editingEntry || {}),
+                    id: editingEntry ? editingEntry.id : Date.now(),
+                    content,
+                    mood: getMoodFromPosition(currentMoodPosition),
+                    tags: tagsArray,
+                    topics,
+                    timeBucket,
+                    openingPhrase,
+                    startingPhraseCategory,
+                    wordCount,
+                    createdAt: createdAtISO,
+                    updatedAt: new Date().toISOString(),
+                    date: dateString,
+                    prompt: promptSnapshot,
+                    promptId: promptSnapshot ? generatePromptId(promptSnapshot) : undefined,
+                    includeInSummaries: summaryToggle?.checked !== false
+                };
+                
+                try {
+                    if (editingEntry && window.NuukoStorage?.getEntryById) {
+                        const latest = await NuukoStorage.getEntryById(editingEntry.id);
+                        if (latest && latest.updatedAt && originalUpdatedAt && latest.updatedAt !== originalUpdatedAt) {
+                            const overwrite = confirm('This page was updated in another tab. Replace it with your copy?');
+                            if (!overwrite) {
+                                saveButton.disabled = false;
+                                saveButtonText.textContent = 'save changes';
+                                showStatus('kept the latest version from the other tab.', 'info');
+                                return;
+                            }
+                        }
+                    }
+                    
+                    if (window.NuukoStorage) {
+                        await storageReady;
+                        await NuukoStorage.saveEntry(entryPayload);
+                        persistDraft();
+                    } else {
+                        const entries = JSON.parse(localStorage.getItem('nuuko_entries') || '[]');
+                        let updated = [];
+                        if (editingEntry) {
+                            updated = entries.map((item) => item.id === editingEntry.id ? entryPayload : item);
+                        } else {
+                            updated = [entryPayload, ...entries].slice(0, 50);
+                        }
+                        localStorage.setItem('nuuko_entries', JSON.stringify(updated));
+                        
+                        const stats = JSON.parse(localStorage.getItem('nuuko_stats') || '{}');
+                        stats.totalEntries = editingEntry ? updated.length : (stats.totalEntries || 0) + 1;
+                        stats.totalWords = (stats.totalWords || 0) - (editingEntry?.wordCount || 0) + wordCount;
+                        stats.lastEntryDate = entryPayload.createdAt;
+                        localStorage.setItem('nuuko_stats', JSON.stringify(stats));
+                    }
+                    
+                    if (editingEntry) {
+                        const latest = window.NuukoStorage?.getEntryById
+                            ? await NuukoStorage.getEntryById(entryPayload.id)
+                            : entryPayload;
+                        editingEntry = latest;
+                        originalUpdatedAt = latest?.updatedAt || entryPayload.updatedAt;
+                        saveButton.disabled = false;
+                        saveButtonText.textContent = 'save changes';
+                        showStatus('changes saved', 'success');
+                        persistDraft();
+                    } else {
+                        clearDraft();
+                        writingArea.value = '';
+                        if (tagsInput) {
+                        if (tagsInput) {
+                            tagsInput.value = '';
+                        }
+                        }
+                        summaryToggle.checked = true;
+                        updateStats();
+                        autoResize();
+                        successModal.classList.remove('hidden');
+                        successModal.classList.add('modal-visible');
+                        saveButtonText.textContent = 'save page';
+                        evaluatePageTitle();
+                    }
+                } catch (error) {
+                    console.error('[Nuuko] failed to save entry', error);
+                    showError('we could not save your reflection. please try again.');
+                    saveButton.disabled = false;
+                    saveButtonText.textContent = editingEntry ? 'save changes' : 'save page';
+                }
             }
+            
+            async function handleDeleteEntry() {
+                if (!editingEntry) return;
+                const confirmed = confirm('Delete this entry? This cannot be undone.');
+                if (!confirmed) return;
+                
+                try {
+                    if (window.NuukoStorage) {
+                        await storageReady;
+                        await NuukoStorage.deleteEntry(editingEntry.id);
+                    } else {
+                        const entries = JSON.parse(localStorage.getItem('nuuko_entries') || '[]').filter(entry => entry.id !== editingEntry.id);
+                        localStorage.setItem('nuuko_entries', JSON.stringify(entries));
+                    }
+                    clearDraft();
+                    showStatus('entry deleted', 'error');
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    console.error('[Nuuko] failed to delete entry', error);
+                    showError('could not delete this entry. please try again.');
+                }
+            }
+            
+            function resetEditingState() {
+                editingEntry = null;
+                originalUpdatedAt = null;
+                writingArea.value = '';
+                if (tagsInput) {
+                if (tagsInput) {
+                    tagsInput.value = '';
+                }
+                }
+                summaryToggle.checked = true;
+                deleteButton.classList.add('hidden');
+                editingBanner?.classList.add('hidden');
+                saveButtonText.textContent = 'save page';
+                pageTitle.textContent = 'new entry';
+                evaluatePageTitle();
+                updateStats();
+                autoResize();
+                syncPromptFromSettings();
+                window.history.replaceState({}, '', 'write.html');
+                clearDraft();
+                clearStatus();
+                showStatus('starting a fresh page', 'info');
         }
 
-        // Load saved prompt on page load
-        window.addEventListener('load', () => {
-            const savedPrompt = localStorage.getItem('nuuko_current_prompt');
-            if (savedPrompt) {
-                document.getElementById('writePagePrompt').textContent = savedPrompt;
+        function parseTagsFromInput() {
+            if (!tagsInput) return [];
+            return tagsInput.value
+                .split(',')
+                .map(tag => tag.trim().toLowerCase())
+                .filter(Boolean);
+        }
+
+        const TOPIC_KEYWORDS = {
+            work: ['work', 'career', 'boss', 'office', 'client', 'job', 'deadline'],
+            social: ['friend', 'friends', 'party', 'gathering', 'social', 'date', 'family'],
+            health: ['health', 'body', 'exercise', 'sleep', 'run', 'workout', 'meditation', 'yoga'],
+            self: ['self', 'mind', 'goal', 'dream', 'journal', 'reflection', 'feel', 'feelings']
+        };
+
+        function bucketTimeOfDay(date) {
+            const hour = date.getHours();
+            if (hour >= 5 && hour < 12) return 'morning';
+            if (hour >= 12 && hour < 17) return 'afternoon';
+            if (hour >= 17 && hour < 21) return 'evening';
+            return 'night';
+        }
+
+        function extractOpeningPhrase(text = '') {
+            if (!text) return '';
+            const cleaned = text.trim().split(/\s+/).slice(0, 6).join(' ');
+            return cleaned.toLowerCase();
+        }
+
+        function categorizeOpeningPhrase(text = '') {
+            const cleaned = text.trim().toLowerCase();
+            if (cleaned.startsWith('i feel')) return 'i_feel';
+            if (cleaned.startsWith('today')) return 'today';
+            if (cleaned.startsWith('dear')) return 'dear';
+            if (cleaned.includes('?')) return 'question';
+            return 'other';
+        }
+
+        function deriveTopicsFromTags(tags = [], content = '') {
+            const topics = new Set();
+            const loweredContent = content.toLowerCase();
+            Object.entries(TOPIC_KEYWORDS).forEach(([topic, keywords]) => {
+                const hasTag = tags.some(tag => keywords.includes(tag) || tag === topic);
+                const hasKeyword = keywords.some(keyword => loweredContent.includes(keyword));
+                if (hasTag || hasKeyword) {
+                    topics.add(topic);
+                }
+            });
+            if (topics.size === 0 && tags.length > 0) {
+                topics.add('self');
             }
-        });
+            return Array.from(topics);
+        }
+            
+            function formatTags(tags = []) {
+                if (!Array.isArray(tags)) return '';
+                return tags.join(', ');
+            }
+            
+            function generatePromptId(text = '') {
+                return text
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-+|-+$/g, '')
+                    .slice(0, 60);
+            }
+            
+            function persistDraft() {
+                const draft = {
+                    content: writingArea.value,
+                    moodPosition: currentMoodPosition,
+                    tagsValue: tagsInput?.value || '',
+                    summaryIncluded: summaryToggle?.checked !== false,
+                    entryId: editingEntry ? editingEntry.id : null,
+                    timestamp: Date.now()
+                };
+                
+                if (!draft.content && !draft.tagsValue) {
+                    clearDraft();
+                    return;
+                }
+                
+                localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+            }
+            
+            function clearDraft() {
+                localStorage.removeItem(DRAFT_KEY);
+            }
+            
+            function applyDraftIfRelevant(force = false) {
+                const raw = localStorage.getItem(DRAFT_KEY);
+                if (!raw) return;
+                
+                let draft;
+                try {
+                    draft = JSON.parse(raw);
+                } catch {
+                    return;
+                }
+                
+                const editingId = editingEntry ? String(editingEntry.id) : null;
+                const draftId = draft.entryId ? String(draft.entryId) : null;
+                
+                if (!force) {
+                    if (draftId && (!editingId || draftId !== editingId)) return;
+                    if (!draftId && editingId) return;
+                } else if (draftId && editingId && draftId !== editingId) {
+                    return;
+                }
+                
+                if (draft.content) {
+                    writingArea.value = draft.content;
+                    updateStats();
+                    autoResize();
+                }
+                
+                if (typeof draft.moodPosition === 'number') {
+                    setMoodPosition(draft.moodPosition);
+                }
+                
+                if (draft.tagsValue !== undefined && tagsInput) {
+                    tagsInput.value = draft.tagsValue;
+                }
+                
+                if (typeof draft.summaryIncluded === 'boolean' && summaryToggle) {
+                    summaryToggle.checked = draft.summaryIncluded;
+                }
+            }
+            
+            async function fetchEntry(entryId) {
+                if (window.NuukoStorage?.getEntryById) {
+                    return NuukoStorage.getEntryById(entryId);
+                }
+                const entries = JSON.parse(localStorage.getItem('nuuko_entries') || '[]');
+                return entries.find(entry => String(entry.id) === String(entryId));
+            }
+            
+            window.startPromptEdit = openPromptEditor;
+            window.cancelPromptEdit = () => closePromptEditor(true);
+            window.savePromptEdit = saveEditedPrompt;
+            window.dismissPromptSection = hidePromptCard;
+            window.restorePromptSection = showPromptCard;
+
+            window.changePrompt = async function changePrompt() {
+                if (promptEngine && !editingEntry) {
+                    try {
+                        const next = currentPromptData
+                            ? await promptEngine.refreshPrompt()
+                            : await promptEngine.getPrompt();
+                        currentPromptData = next;
+                        applyPromptToUI(next.primaryPrompt);
+                        return;
+                    } catch (error) {
+                        console.warn('[Nuuko] prompt refresh fallback', error);
+                    }
+                }
+
+                const currentPrompt = writePagePrompt?.textContent || 'what surprised you today?';
+                const newPrompt = FALLBACK_PROMPTS.find((p) => p !== currentPrompt) || currentPrompt;
+                applyPromptToUI(newPrompt);
+            };
+        })();
     </script>
 </body>
 </html>
+            function openPromptEditor() {
+                if (!promptEditor || !promptEditInput) return;
+                promptEditInput.value = writePagePrompt?.textContent?.trim() || '';
+                promptEditor.classList.remove('hidden');
+                setTimeout(() => promptEditInput.focus(), 30);
+            }
+
+            function closePromptEditor(reset = true) {
+                if (!promptEditor || !promptEditInput) return;
+                if (reset) {
+                    promptEditInput.value = writePagePrompt?.textContent || '';
+                }
+                promptEditor.classList.add('hidden');
+            }
+
+            function saveEditedPrompt() {
+                if (!promptEditInput) return;
+                const nextPrompt = promptEditInput.value.trim();
+                if (!nextPrompt) {
+                    alert('Write a prompt or cancel editing.');
+                    promptEditInput.focus();
+                    return;
+                }
+                applyPromptToUI(nextPrompt);
+            }
+
+            function hidePromptCard() {
+                if (!promptSectionCard || !promptHiddenNotice) return;
+                promptSectionCard.classList.add('hidden');
+                promptHiddenNotice.classList.remove('hidden');
+            }
+
+            function showPromptCard() {
+                if (!promptSectionCard || !promptHiddenNotice) return;
+                promptSectionCard.classList.remove('hidden');
+                promptHiddenNotice.classList.add('hidden');
+            }
